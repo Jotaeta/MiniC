@@ -3,92 +3,69 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-
 namespace MiniC
 {
     class Program
     {
-       
         static void Main(string[] args)
         {
-            #region REGEX
-            Regex Palabras_Reservadas = new Regex(@"^(void|vo|int|double|bool|string|class|const|interface|null|this|for|while|foreach|if|else|return|break|New|NewArray|Console|WriteLine)$");
-            Regex Simbolos_Permitidos = new Regex(@"^(a|b|v|o|i|d|vo)$");
-            #endregion
-
-            List <string> Tokens = new List <string>();
-
+            
+            var listaTokens = new List<string>();
             var ruta = string.Empty;
-            var extension = string.Empty;
-            var aux = string.Empty;
-            var texto = string.Empty;
-            var linea = 1;
-
-            Console.WriteLine("\n\t Allan Davila 1160118\n\t Jonathan Argueta 1029418");
-
-
-            Console.WriteLine("Ingrese Archivo: ");
-            //ruta = Console.ReadLine();
-            ruta = @"C:\Users\jotae\OneDrive\Escritorio\Pruebas.txt";
-            extension = Path.GetExtension(ruta);
-
-            if (!extension.Equals(".txt"))
-            {
-                Console.WriteLine("Archivo de entrada no coincide con extension");
-            }
+            var contadorLinea = 1;
+            var contadorColumna = 0;
+            Console.WriteLine("\n\t Allan Davila 1160118\n\t Jonathan Argueta 1029418\n");            
+            Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine("Ingrese Ruta de Archivo: ");
+            ruta = Console.ReadLine();
             if (!File.Exists(ruta))
             {
                 Console.WriteLine("Ingrese un Archivo Valido");
             }
-
-
-            TextReader LeerArchivo = new StreamReader(ruta);
-            texto = LeerArchivo.ReadToEnd();
-            Console.WriteLine(texto);
-
-            foreach (var letra in texto)
+            else
             {
-                aux += letra;
-
-                if (letra == ' '|| letra == '\t'|| letra == '\r')
+                using (var reader = new StreamReader(new FileStream(ruta, FileMode.Open)))
                 {
-                    aux = string.Empty;
-                }
-                if (aux == " "||aux == "\t"||aux == "\r") {
-                    aux = string.Empty;
-                }
-                else if (letra == '\n')
-                {
-                    aux = string.Empty;
-                    linea++;
-                }
-
-                if (aux == " ") 
-                {
-                    aux += letra;
-                }
-
-                if (Simbolos_Permitidos.IsMatch(aux))
-                {
-                    if (Palabras_Reservadas.IsMatch(aux))
+                    try
                     {
-                        Tokens.Add("Palabra reservada " + aux + " en linea " + linea);
-                        aux = string.Empty;
+                        var lineaActual = string.Empty;
+                        lineaActual = reader.ReadLine();
+                        while (lineaActual != null)
+                        {
+                            foreach (var item in lineaActual.Split(' '))
+                            {
+                                if (A_lexico.regexSimbolosPermitidos.IsMatch(item))
+                                {
+                                    if (A_lexico.regexPalabrasReservadas.IsMatch(item))
+                                    {
+                                        var inicioColumna = contadorColumna;
+                                        contadorColumna = +item.Length;
+                                        var tokenEscribir = (item + " Es Palabra Reservada Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                                        listaTokens.Add(tokenEscribir);
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Contiene simbolos no permitidos");
+                                }
+                            }
+                            lineaActual = reader.ReadLine();
+                            contadorLinea++;
+                        }
                     }
+                    catch
+                    {
+                        Console.WriteLine("Hay error.");
+                    }
+                    reader.Close();
                 }
-                else {
-                    Tokens.Add("Simbolo No valido " + aux + " en linea " + linea) ;
-                    aux = string.Empty;
+                foreach (var item in listaTokens)
+                {
+                    Console.WriteLine(item);
                 }
-
-
+                Console.ReadLine();
             }
-
-            foreach (var item in Tokens)
-            {
-                Console.WriteLine(item);
-            }
-
-        }     
+        }
     }
 }
