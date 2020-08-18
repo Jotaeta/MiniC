@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace MiniC
 {
@@ -6,7 +8,6 @@ namespace MiniC
     {
         static void Main(string[] args)
         {
-           
         }
     }
 }
