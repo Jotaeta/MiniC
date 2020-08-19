@@ -10,8 +10,9 @@ namespace MiniC
         public static Regex regexPalabrasReservadas = new Regex(@"^(void|int|double|bool|string|class|const|interface|null|this|for|while|foreach|if|else|return|break|New|NewArray|Console|WriteLine)$");
         public static Regex regexIdentificadores = new Regex(@"^[a-zA-z]+(\w)*$");
         //Falta completar
-        public static Regex regexComentarioLinea = new Regex(@"^\/\/.*(?!\*\/)\n$");
-        public static Regex regexComentariosMultipleLine = new Regex(@"^\/\*.*\*\/$");
+        public static Regex regexComentarioLinea = new Regex(@"\/\/.*$");
+        public static Regex regexComentariosMultipleLine = new Regex(@"\/\*(.|\t|\n|\r\n|\n\r)*(\*\/)");
+        public static Regex regexComentariosMultipleLineCaso = new Regex(@"\/\*(.|\t|\n|\r\n|\n\r)*");
         public static Regex regexBool = new Regex(@"^(true|false)$");
         public static Regex regexDigitos = new Regex(@"^\d*$");
         public static Regex regexHexadecimal = new Regex(@"^0[Xx][a-fA-F0-9+]+$");

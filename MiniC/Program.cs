@@ -14,6 +14,9 @@ namespace MiniC
             var ruta = string.Empty;
             var contadorLinea = 1;
             var contadorColumna = 0;
+            var esComentario = false;
+            var hayCierreComentario = false;
+
             Console.WriteLine("\n\t Allan Davila 1160118\n\t Jonathan Argueta 1029418\n");
             Console.ReadLine();
             Console.Clear();
@@ -35,21 +38,44 @@ namespace MiniC
                         {
                             if (A_lexico.regexComentarioLinea.IsMatch(lineaActual))
                             {
+                                esComentario = true;
                                 var inicioColumna = contadorColumna;
-                                contadorColumna += lineaActual.Length;
-                                var tokenEscribir = (lineaActual + " Es Comentario Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
-                                listaTokens.Add(tokenEscribir);
+                                //contadorColumna += lineaActual.Length;
+                                var splitBarra = lineaActual.Split("//");
+                                var splitEspacio = splitBarra[0].Split(' ');
+                                foreach (var item in splitEspacio)
+                                {
+                                    //Implementar metodo para analisis de palabras
+                                    contadorColumna += item.Length - 1;
+                                    if (A_lexico.regexPalabrasReservadas.IsMatch(item))
+                                    {
+                                        var tokenEscribir = (item + " Es Palabra Reservada Linea: " + contadorLinea + " Columna: " + inicioColumna + "-" + contadorColumna + "\n");
+                                        listaTokens.Add(tokenEscribir);
+                                    }
+                                }
                             }
-                            else if (A_lexico.regexString.IsMatch(lineaActual))
+                            else if (A_lexico.regexComentariosMultipleLine.IsMatch(lineaActual))
                             {
-                                // modificar
+                                var splitInicioComentario = lineaActual.Split("/*");
+                                var splitFinComentario = lineaActual.Split("*/");
+
+                            }
+                            else if (A_lexico.regexComentariosMultipleLineCaso.IsMatch(lineaActual))
+                            {
+                                var splitInicioComentario = lineaActual.Split("/*");
+                                do
+                                {
+                                    lineaActual = reader.ReadLine();
+                                } while (!lineaActual.Contains("*/") && lineaActual != null);
+                                var splitFinComentario = lineaActual.Split("*/");
+                                //Implementar metodo para analisis de palabras
                             }
                             else
                             {
                                 foreach (var item in lineaActual.Split(' '))
                                 {
                                     var cantidadMatches = A_lexico.regexSimbolosPermitidos.Matches(item);
-                                    if (cantidadMatches.Count == item.Length)
+                                    if (cantidadMatches.Count == item.Length && !esComentario)
                                     {
                                         var inicioColumna = contadorColumna;
                                         contadorColumna += item.Length - 1;
@@ -59,12 +85,6 @@ namespace MiniC
                                             listaTokens.Add(tokenEscribir);
                                         }
                                         else if (A_lexico.regexBool.IsMatch(item))
-                                        {
-                                            var tokenEscribir = (item + " Es Bool Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
-                                            listaTokens.Add(tokenEscribir);
-                                        }
-                                        //Implementar comentario multiples lineas
-                                        else if (A_lexico.regexComentariosMultipleLine.IsMatch(item))
                                         {
                                             var tokenEscribir = (item + " Es Bool Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                             listaTokens.Add(tokenEscribir);
@@ -109,7 +129,7 @@ namespace MiniC
                                     }
                                 }
                             }
-
+                            esComentario = false;
                             lineaActual = reader.ReadLine();
                             contadorLinea++;
                             contadorColumna = 0;
