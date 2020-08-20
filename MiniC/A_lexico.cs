@@ -28,35 +28,35 @@ namespace MiniC
             var resultadoAnalisis = string.Empty;
             if (regexPalabrasReservadas.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + " Es Palabra Reservada Linea: " + contadorLinea + " Columna: " + inicioColumna + "-" + contadorColumna + "\n");
+                resultadoAnalisis = (palabra + "        Es Palabra Reservada Linea: " + contadorLinea + " Columna: " + inicioColumna + "-" + contadorColumna + "\n");
             }
             else if (regexBool.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + " Es Bool Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                resultadoAnalisis = (palabra + "         Es Bool Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
             else if (regexDigitos.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + " Es un Digito Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                resultadoAnalisis = (palabra + "         Es un Digito Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
             else if (regexDouble.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + " Es Double Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                resultadoAnalisis = (palabra + "        Es Double Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
             else if (regexDoubleExponencial.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + " Es Double Exponencial Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                resultadoAnalisis = (palabra + "        Es Double Exponencial Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
             else if (regexHexadecimal.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + " Es Hexadecimal Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                resultadoAnalisis = (palabra + "        Es Hexadecimal Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
             else if (regexOperadores.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + " Es Operador Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                resultadoAnalisis = (palabra + "         Es Operador Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
             else if (regexIdentificadores.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + " Es Identificador Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                resultadoAnalisis = (palabra + "        Es Identificador Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
             return resultadoAnalisis;
         }

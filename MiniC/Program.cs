@@ -36,6 +36,7 @@ namespace MiniC
                         lineaActual = reader.ReadLine();
                         while (lineaActual != null)
                         {
+                            //Linea con comentario de una linea FALTA COMPLETAR
                             if (A_lexico.regexComentarioLinea.IsMatch(lineaActual))
                             {
                                 esComentario = true;
@@ -53,27 +54,70 @@ namespace MiniC
                                     }
                                 }
                             }
+                            //Linea con comentarios de multiple linea  en una linea FALTA COMPLETAR
                             else if (A_lexico.regexComentariosMultipleLine.IsMatch(lineaActual))
                             {
                                 var splitInicioComentario = lineaActual.Split("/*");
                                 var splitFinComentario = lineaActual.Split("*/");
-
+                                //Agregar analisis
                             }
+                            //Linea con comentarios de multiple linea COMPLETO
                             else if (A_lexico.regexComentariosMultipleLineCaso.IsMatch(lineaActual))
                             {
                                 var splitInicioComentario = lineaActual.Split("/*");
                                 var splitEspacio = splitInicioComentario[0].Split(" ");
                                 foreach (var item in splitEspacio)
                                 {
-                                    var inicioColumna = contadorColumna;
-                                    contadorColumna += item.Length;
-                                    //Implementar metodo para analisis de palabras
-                                    contadorColumna += item.Length - 1;
-                                    if (A_lexico.regexSimbolosPermitidos.IsMatch(item))
+                                    var cantidadMatches = A_lexico.regexSimbolosPermitidos.Matches(item);
+                                    //Caracter no permitido no viene 
+                                    if (cantidadMatches.Count == item.Length && !esComentario)
                                     {
+                                        var inicioColumna = contadorColumna;
+                                        contadorColumna += item.Length;
+                                        contadorColumna += item.Length - 1;
                                         listaTokens.Add(A_lexico.AnalisisPalabras(item, contadorLinea, inicioColumna, contadorColumna));
+                                        contadorColumna = contadorColumna + 2;
+                                    }
+                                    //Caracter no permitido viene solo
+                                    else if (!A_lexico.regexSimbolosPermitidos.IsMatch(item))
+                                    {
+                                        var inicioColumna = contadorColumna;
+                                        contadorColumna += item.Length;
+                                        listaTokens.Add(item + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                                    }
+                                    //Caracter no permitido viene junto
+                                    else
+                                    {                                       
+                                        var palabraConSNP = string.Empty;
+                                        var inicioColumna = 0;
+                                        foreach (var letra in item)
+                                        {
+                                            if (!A_lexico.regexSimbolosPermitidos.IsMatch(letra.ToString()))
+                                            {
+                                                palabraConSNP = palabraConSNP.Replace(" ", "");
+                                                inicioColumna = contadorColumna;
+                                                contadorColumna += palabraConSNP.Length;
+                                                listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
+                                                inicioColumna = contadorColumna;
+                                                contadorColumna += letra.ToString().Length;
+                                                listaTokens.Add(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                                                palabraConSNP = " ";
+                                            }
+                                            else
+                                            {
+                                                palabraConSNP += letra;
+                                            }
+                                        }
+                                        if (palabraConSNP != " ")
+                                        {
+                                            palabraConSNP = palabraConSNP.Replace(" ", "");
+                                            inicioColumna = contadorColumna;
+                                            contadorColumna += palabraConSNP.Length;
+                                            listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
+                                        }
                                     }
                                 }
+                                //Se busca en archivo hasta encontrar el cierre de comentario
                                 while (lineaActual != null)
                                 {
                                     if (lineaActual.Contains("*/"))
@@ -83,33 +127,77 @@ namespace MiniC
                                     }
                                     lineaActual = reader.ReadLine();
                                 }
+                                //Si el archivo tiene cierre de comentario
                                 if (hayCierreComentario)
                                 {
                                     var splitFinComentario = lineaActual.Split("*/");
                                     splitEspacio = splitFinComentario[1].Split(" ");
                                     foreach (var item in splitEspacio)
                                     {
-                                        var inicioColumna = contadorColumna;
-                                        contadorColumna += item.Length;
-                                        //Implementar metodo para analisis de palabras
-                                        contadorColumna += item.Length - 1;
-                                        if (A_lexico.regexSimbolosPermitidos.IsMatch(item))
+                                        var cantidadMatches = A_lexico.regexSimbolosPermitidos.Matches(item);
+                                        //Caracter no permitido no viene 
+                                        if (cantidadMatches.Count == item.Length && !esComentario)
                                         {
+                                            var inicioColumna = contadorColumna;
+                                            contadorColumna += item.Length;
+                                            contadorColumna += item.Length - 1;
                                             listaTokens.Add(A_lexico.AnalisisPalabras(item, contadorLinea, inicioColumna, contadorColumna));
+                                            contadorColumna = contadorColumna + 2;
+                                        }
+                                        //Caracter no permitido viene solo
+                                        else if (!A_lexico.regexSimbolosPermitidos.IsMatch(item))
+                                        {
+                                            var inicioColumna = contadorColumna;
+                                            contadorColumna += item.Length;
+                                            listaTokens.Add(item + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                                        }
+                                        //Caracter no permitido viene junto
+                                        else
+                                        {
+                                            var palabraConSNP = string.Empty;
+                                            var inicioColumna = 0;
+                                            foreach (var letra in item)
+                                            {
+                                                if (!A_lexico.regexSimbolosPermitidos.IsMatch(letra.ToString()))
+                                                {
+                                                    palabraConSNP = palabraConSNP.Replace(" ", "");
+                                                    inicioColumna = contadorColumna;
+                                                    contadorColumna += palabraConSNP.Length;
+                                                    listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
+                                                    inicioColumna = contadorColumna;
+                                                    contadorColumna += letra.ToString().Length;
+                                                    listaTokens.Add(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                                                    palabraConSNP = " ";
+                                                }
+                                                else
+                                                {
+                                                    palabraConSNP += letra;
+                                                }
+                                            }
+                                            if (palabraConSNP != " ")
+                                            {
+                                                palabraConSNP = palabraConSNP.Replace(" ", "");
+                                                inicioColumna = contadorColumna;
+                                                contadorColumna += palabraConSNP.Length;
+                                                listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
+                                            }
                                         }
                                     }
                                 }
+                                //Si el archivo no tiene cierre de comentario hay error
                                 else
                                 {
-                                    listaTokens.Add("En linea: " +contadorLinea+" abre comentario y nunca cierra");
+                                    listaTokens.Add("       En linea: " +contadorLinea+" abre comentario y nunca cierra");
                                 }
                                 //Implementar metodo para analisis de palabras
                             }
+                            //Linea Normal separada por espacios COMPLETO... hasta el momento
                             else
                             {
                                 foreach (var item in lineaActual.Split(' '))
                                 {
                                     var cantidadMatches = A_lexico.regexSimbolosPermitidos.Matches(item);
+                                    //No contiene caracter no permitido
                                     if (cantidadMatches.Count == item.Length && !esComentario)
                                     {
                                         var inicioColumna = contadorColumna;
@@ -117,11 +205,44 @@ namespace MiniC
                                         listaTokens.Add(A_lexico.AnalisisPalabras(item, contadorLinea, inicioColumna, contadorColumna));
                                         contadorColumna = contadorColumna + 2;
                                     }
-                                    else
+                                    //Caracter no permitido individual
+                                    else if (!A_lexico.regexSimbolosPermitidos.IsMatch(item))
                                     {
                                         var inicioColumna = contadorColumna;
-                                        contadorColumna += item.Length;
-                                        listaTokens.Add(item + " Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                                        contadorColumna += item.Length;                                        
+                                        listaTokens.Add(item + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                                        contadorColumna = contadorColumna + 2;
+                                    }
+                                    //Caracter no permitido viene junto
+                                    else
+                                    {
+                                        var palabraConSNP = string.Empty;
+                                        var inicioColumna = 0;
+                                        foreach (var letra in item)
+                                        {
+                                            if (!A_lexico.regexSimbolosPermitidos.IsMatch(letra.ToString()))
+                                            {
+                                                palabraConSNP= palabraConSNP.Replace(" ","");
+                                                inicioColumna = contadorColumna;
+                                                contadorColumna += palabraConSNP.Length;
+                                                listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
+                                                inicioColumna = contadorColumna;
+                                                contadorColumna += letra.ToString().Length;
+                                                listaTokens.Add(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                                                palabraConSNP = " ";
+                                            }
+                                            else
+                                            {
+                                                palabraConSNP += letra;
+                                            }
+                                        }
+                                        if (palabraConSNP!=" ")
+                                        {
+                                            palabraConSNP= palabraConSNP.Replace(" ", "");
+                                            inicioColumna = contadorColumna;
+                                            contadorColumna += palabraConSNP.Length;
+                                            listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
+                                        }
                                     }
                                 }
                             }
