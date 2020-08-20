@@ -39,18 +39,17 @@ namespace MiniC
                             if (A_lexico.regexComentarioLinea.IsMatch(lineaActual))
                             {
                                 esComentario = true;
-                                var inicioColumna = contadorColumna;
-                                //contadorColumna += lineaActual.Length;
                                 var splitBarra = lineaActual.Split("//");
                                 var splitEspacio = splitBarra[0].Split(' ');
                                 foreach (var item in splitEspacio)
                                 {
+                                    var inicioColumna = contadorColumna;
+                                    contadorColumna += item.Length;
                                     //Implementar metodo para analisis de palabras
                                     contadorColumna += item.Length - 1;
-                                    if (A_lexico.regexPalabrasReservadas.IsMatch(item))
+                                    if (A_lexico.regexSimbolosPermitidos.IsMatch(item))
                                     {
-                                        var tokenEscribir = (item + " Es Palabra Reservada Linea: " + contadorLinea + " Columna: " + inicioColumna + "-" + contadorColumna + "\n");
-                                        listaTokens.Add(tokenEscribir);
+                                        listaTokens.Add(A_lexico.AnalisisPalabras(item, contadorLinea, inicioColumna, contadorColumna));
                                     }
                                 }
                             }
@@ -63,11 +62,47 @@ namespace MiniC
                             else if (A_lexico.regexComentariosMultipleLineCaso.IsMatch(lineaActual))
                             {
                                 var splitInicioComentario = lineaActual.Split("/*");
-                                do
+                                var splitEspacio = splitInicioComentario[0].Split(" ");
+                                foreach (var item in splitEspacio)
                                 {
+                                    var inicioColumna = contadorColumna;
+                                    contadorColumna += item.Length;
+                                    //Implementar metodo para analisis de palabras
+                                    contadorColumna += item.Length - 1;
+                                    if (A_lexico.regexSimbolosPermitidos.IsMatch(item))
+                                    {
+                                        listaTokens.Add(A_lexico.AnalisisPalabras(item, contadorLinea, inicioColumna, contadorColumna));
+                                    }
+                                }
+                                while (lineaActual != null)
+                                {
+                                    if (lineaActual.Contains("*/"))
+                                    {
+                                        hayCierreComentario = true;
+                                        break;
+                                    }
                                     lineaActual = reader.ReadLine();
-                                } while (!lineaActual.Contains("*/") && lineaActual != null);
-                                var splitFinComentario = lineaActual.Split("*/");
+                                }
+                                if (hayCierreComentario)
+                                {
+                                    var splitFinComentario = lineaActual.Split("*/");
+                                    splitEspacio = splitFinComentario[1].Split(" ");
+                                    foreach (var item in splitEspacio)
+                                    {
+                                        var inicioColumna = contadorColumna;
+                                        contadorColumna += item.Length;
+                                        //Implementar metodo para analisis de palabras
+                                        contadorColumna += item.Length - 1;
+                                        if (A_lexico.regexSimbolosPermitidos.IsMatch(item))
+                                        {
+                                            listaTokens.Add(A_lexico.AnalisisPalabras(item, contadorLinea, inicioColumna, contadorColumna));
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    listaTokens.Add("En linea: " +contadorLinea+" abre comentario y nunca cierra");
+                                }
                                 //Implementar metodo para analisis de palabras
                             }
                             else
@@ -79,53 +114,14 @@ namespace MiniC
                                     {
                                         var inicioColumna = contadorColumna;
                                         contadorColumna += item.Length - 1;
-                                        if (A_lexico.regexPalabrasReservadas.IsMatch(item))
-                                        {
-                                            var tokenEscribir = (item + " Es Palabra Reservada Linea: " + contadorLinea + " Columna: " + inicioColumna + "-" + contadorColumna + "\n");
-                                            listaTokens.Add(tokenEscribir);
-                                        }
-                                        else if (A_lexico.regexBool.IsMatch(item))
-                                        {
-                                            var tokenEscribir = (item + " Es Bool Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
-                                            listaTokens.Add(tokenEscribir);
-                                        }
-                                        else if (A_lexico.regexDigitos.IsMatch(item))
-                                        {
-                                            var tokenEscribir = (item + " Es un Digito Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
-                                            listaTokens.Add(tokenEscribir);
-                                        }
-                                        else if (A_lexico.regexDouble.IsMatch(item))
-                                        {
-                                            var tokenEscribir = (item + " Es Double Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
-                                            listaTokens.Add(tokenEscribir);
-                                        }
-                                        else if (A_lexico.regexDoubleExponencial.IsMatch(item))
-                                        {
-                                            var tokenEscribir = (item + " Es Double Exponencial Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
-                                            listaTokens.Add(tokenEscribir);
-                                        }
-                                        else if (A_lexico.regexHexadecimal.IsMatch(item))
-                                        {
-                                            var tokenEscribir = (item + " Es Hexadecimal Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
-                                            listaTokens.Add(tokenEscribir);
-                                        }
-                                        else if (A_lexico.regexOperadores.IsMatch(item))
-                                        {
-                                            var tokenEscribir = (item + " Es Operador Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
-                                            listaTokens.Add(tokenEscribir);
-                                        }
-                                        else if (A_lexico.regexIdentificadores.IsMatch(item))
-                                        {
-                                            var tokenEscribir = (item + " Es Identificador Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
-                                            listaTokens.Add(tokenEscribir);
-                                        }
+                                        listaTokens.Add(A_lexico.AnalisisPalabras(item, contadorLinea, inicioColumna, contadorColumna));
                                         contadorColumna = contadorColumna + 2;
                                     }
                                     else
                                     {
                                         var inicioColumna = contadorColumna;
                                         contadorColumna += item.Length;
-                                        var tokenEscribir = (item + " Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                                        listaTokens.Add(item + " Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                     }
                                 }
                             }
