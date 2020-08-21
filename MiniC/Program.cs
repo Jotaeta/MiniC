@@ -10,6 +10,14 @@ namespace MiniC
         static void Main(string[] args)
         {
 
+
+            // COMENTARIOS DE UNA LINEA TERMINAR (VIERNES) 
+            // STRINGS  (VIERNES)
+            // PALABRAS JUNTAS (MATCH O COMO HICIMOS LOS CARACTERES) (VIERNES O SABADO)
+            // ESCRIBIR EN ARCHIVO (SABADO)
+            // MANEJO DE ERRORES VERIFICARLOS (SABADO) 
+            // OPTIMIZAR CODIGO (DEPENDE DE LAS INSTRUCCIONES)
+
             var listaTokens = new List<string>();
             var ruta = string.Empty;
             var contadorLinea = 1;
@@ -260,7 +268,10 @@ namespace MiniC
                 }
                 foreach (var item in listaTokens)
                 {
-                    Console.WriteLine(item);
+                    if (item != string.Empty)
+                    {
+                    Console.WriteLine(item);    
+                    }
                 }
                 Console.ReadLine();
             }
