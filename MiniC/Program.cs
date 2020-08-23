@@ -36,6 +36,7 @@ namespace MiniC
             }
             else
             {
+
                 using (var reader = new StreamReader(new FileStream(ruta, FileMode.Open)))
                 {
                     try
@@ -135,6 +136,7 @@ namespace MiniC
                                     }
                                     lineaActual = reader.ReadLine();
                                 }
+
                                 //Si el archivo tiene cierre de comentario
                                 if (hayCierreComentario)
                                 {
@@ -192,19 +194,22 @@ namespace MiniC
                                         }
                                     }
                                 }
+
                                 //Si el archivo no tiene cierre de comentario hay error
                                 else
                                 {
                                     listaTokens.Add("       En linea: " +contadorLinea+" abre comentario y nunca cierra");
                                 }
+
                                 //Implementar metodo para analisis de palabras
                             }
-                            //Linea Normal separada por espacios COMPLETO... hasta el momento
+                            
                             else
                             {
                                 foreach (var item in lineaActual.Split(' '))
                                 {
                                     var cantidadMatches = A_lexico.regexSimbolosPermitidos.Matches(item);
+
                                     //No contiene caracter no permitido
                                     if (cantidadMatches.Count == item.Length && !esComentario)
                                     {
@@ -213,6 +218,7 @@ namespace MiniC
                                         listaTokens.Add(A_lexico.AnalisisPalabras(item, contadorLinea, inicioColumna, contadorColumna));
                                         contadorColumna = contadorColumna + 2;
                                     }
+
                                     //Caracter no permitido individual
                                     else if (!A_lexico.regexSimbolosPermitidos.IsMatch(item))
                                     {
@@ -221,6 +227,7 @@ namespace MiniC
                                         listaTokens.Add(item + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                         contadorColumna = contadorColumna + 2;
                                     }
+
                                     //Caracter no permitido viene junto
                                     else
                                     {
@@ -266,13 +273,24 @@ namespace MiniC
                     }
                     reader.Close();
                 }
+
+
+
+                #region ESCRITURA ARCHIVO TXT
+                using (var archivo = new StreamWriter("Compilador.txt")) 
+                { 
+
                 foreach (var item in listaTokens)
                 {
                     if (item != string.Empty)
                     {
-                    Console.WriteLine(item);    
+                    archivo.WriteLine(item);    
                     }
                 }
+                    archivo.Close();
+                }
+                #endregion
+                Console.WriteLine("Su archivo esta generado en un archivo");
                 Console.ReadLine();
             }
         }
