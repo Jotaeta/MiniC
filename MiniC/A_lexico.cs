@@ -20,7 +20,8 @@ namespace MiniC
         public static Regex regexDouble = new Regex(@"^\d+\.\d*$");
         public static Regex regexDoubleExponencial = new Regex(@"^\d+\.E\+\d+$");
         //Falta completar
-        public static Regex regexString = new Regex("\"([^\"]*)\"$");
+        public static char asciiComillas = '"';
+        public static Regex regexString = new Regex("");
         public static Regex regexOperadores = new Regex(@"^(\+|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\&\&|\|\||\!|\;|\,|\.|\[|\]|\(|\)|\{|\}|\[\]|\(\)|\{\})$");
         public static Regex regexSimbolosPermitidos = new Regex(@"(\+|\s|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\&\&|\|\||\!|\;|\,|\.|\[|\]|\(|\)|\{|\}|\[\]|\(\)|\{\}|\w)");
 

@@ -45,8 +45,52 @@ namespace MiniC
                         lineaActual = reader.ReadLine();
                         while (lineaActual != null)
                         {
-                            //Linea con comentario de una linea FALTA COMPLETAR
-                            if (A_lexico.regexComentarioLinea.IsMatch(lineaActual))
+                            //Linea contiene comillas
+                            if (lineaActual.Contains(A_lexico.asciiComillas))
+                            {
+                                var textoString = string.Empty;
+                                var cantidadComillas = 0;
+                                foreach (var item in lineaActual)
+                                {
+                                    var inicioColumna = contadorColumna;
+                                    contadorColumna += textoString.Length;
+                                    //Implementar metodo para analisis de palabras
+                                    contadorColumna += textoString.Length - 1;
+                                    if (item == '"' && cantidadComillas == 0)
+                                    {
+                                        cantidadComillas++;
+                                        textoString += item;
+                                    }
+                                    else if (item != '"')
+                                    {
+                                        textoString += item;
+                                    }
+                                    else if (item == '"' && cantidadComillas != 0)
+                                    {
+                                        cantidadComillas++;
+                                        textoString += item;
+                                    }
+
+                                    if (!textoString.Contains('"') && textoString.Contains(' '))
+                                    {
+                                        textoString = textoString.Trim();
+                                        listaTokens.Add(A_lexico.AnalisisPalabras(textoString,contadorLinea,inicioColumna,contadorColumna));
+                                        textoString = string.Empty;
+                                    }
+                                    else if (textoString.Contains('"') && cantidadComillas==2)
+                                    {
+                                        listaTokens.Add(textoString + "        Es un String Linea: " + contadorLinea + " Columna: " + inicioColumna + "-" + contadorColumna + "\n");
+                                        textoString = string.Empty;
+                                    }
+                                    else if (textoString.Contains("//"))
+                                    {
+                                        textoString = string.Empty;
+                                        break;
+                                    }
+                                }
+                            }
+                            //Linea con comentario de una linea
+                            else if (A_lexico.regexComentarioLinea.IsMatch(lineaActual))
                             {
                                 esComentario = true;
                                 var splitBarra = lineaActual.Split("//");
@@ -63,14 +107,14 @@ namespace MiniC
                                     }
                                 }
                             }
-                            //Linea con comentarios de multiple linea  en una linea FALTA COMPLETAR
+                            //Linea con comentarios de multiple linea  en una linea 
                             else if (A_lexico.regexComentariosMultipleLine.IsMatch(lineaActual))
                             {
                                 var splitInicioComentario = lineaActual.Split("/*");
                                 var splitFinComentario = lineaActual.Split("*/");
                                 //Agregar analisis
                             }
-                            //Linea con comentarios de multiple linea COMPLETO
+                            //Linea con comentarios de multiple linea 
                             else if (A_lexico.regexComentariosMultipleLineCaso.IsMatch(lineaActual))
                             {
                                 var splitInicioComentario = lineaActual.Split("/*");
@@ -96,7 +140,7 @@ namespace MiniC
                                     }
                                     //Caracter no permitido viene junto
                                     else
-                                    {                                       
+                                    {
                                         var palabraConSNP = string.Empty;
                                         var inicioColumna = 0;
                                         foreach (var letra in item)
@@ -198,12 +242,13 @@ namespace MiniC
                                 //Si el archivo no tiene cierre de comentario hay error
                                 else
                                 {
-                                    listaTokens.Add("       En linea: " +contadorLinea+" abre comentario y nunca cierra");
+                                    listaTokens.Add("En linea: " + contadorLinea + " abre comentario y nunca cierra");
                                 }
 
                                 //Implementar metodo para analisis de palabras
+                                hayCierreComentario = false;
                             }
-                            
+                            //Analisis palabras separadas con espacio
                             else
                             {
                                 foreach (var item in lineaActual.Split(' '))
@@ -223,7 +268,7 @@ namespace MiniC
                                     else if (!A_lexico.regexSimbolosPermitidos.IsMatch(item))
                                     {
                                         var inicioColumna = contadorColumna;
-                                        contadorColumna += item.Length;                                        
+                                        contadorColumna += item.Length;
                                         listaTokens.Add(item + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                         contadorColumna = contadorColumna + 2;
                                     }
@@ -237,7 +282,7 @@ namespace MiniC
                                         {
                                             if (!A_lexico.regexSimbolosPermitidos.IsMatch(letra.ToString()))
                                             {
-                                                palabraConSNP= palabraConSNP.Replace(" ","");
+                                                palabraConSNP = palabraConSNP.Replace(" ", "");
                                                 inicioColumna = contadorColumna;
                                                 contadorColumna += palabraConSNP.Length;
                                                 listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
@@ -251,9 +296,9 @@ namespace MiniC
                                                 palabraConSNP += letra;
                                             }
                                         }
-                                        if (palabraConSNP!=" ")
+                                        if (palabraConSNP != " ")
                                         {
-                                            palabraConSNP= palabraConSNP.Replace(" ", "");
+                                            palabraConSNP = palabraConSNP.Replace(" ", "");
                                             inicioColumna = contadorColumna;
                                             contadorColumna += palabraConSNP.Length;
                                             listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
@@ -277,20 +322,20 @@ namespace MiniC
 
 
                 #region ESCRITURA ARCHIVO TXT
-                using (var archivo = new StreamWriter("Compilador.txt")) 
-                { 
-
-                foreach (var item in listaTokens)
+                using (var archivo = new StreamWriter("C:\\Users\\Allan Dávila\\Downloads\\Proyecto - Fase #1 - Analizador léxico (Archivos de prueba)-20200823\\Compilador.txt"))
                 {
-                    if (item != string.Empty)
+
+                    foreach (var item in listaTokens)
                     {
-                    archivo.WriteLine(item);    
+                        if (item != string.Empty)
+                        {
+                            archivo.WriteLine(item);
+                        }
                     }
-                }
                     archivo.Close();
                 }
                 #endregion
-                Console.WriteLine("Su archivo esta generado en un archivo");
+                Console.WriteLine("Su archivo ha sido procesado");
                 Console.ReadLine();
             }
         }
