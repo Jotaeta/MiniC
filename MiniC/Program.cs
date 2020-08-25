@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text.RegularExpressions;
 namespace MiniC
 {
@@ -255,32 +256,50 @@ namespace MiniC
                                 {
                                     var palabraConSNP = string.Empty;
                                     var inicioColumna = 0;
-                                    //foreach (var letra in item)
-                                    //{
-                                    //    if (!A_lexico.regexSimbolosPermitidos.IsMatch(letra.ToString()))
-                                    //    {
-                                    //        palabraConSNP = palabraConSNP.Replace(" ", "");
-                                    //        inicioColumna = contadorColumna;
-                                    //        contadorColumna += palabraConSNP.Length;
-                                    //        listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
-                                    //        inicioColumna = contadorColumna;
-                                    //        contadorColumna += letra.ToString().Length;
-                                    //        listaTokens.Add(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
-                                    //        palabraConSNP = string.Empty;
-                                    //    }
-                                    //    else
-                                    //    {
-                                    //        palabraConSNP += letra;
-                                            
-                                    //    }
-                                    //}
-                                    //if (palabraConSNP != " ")
-                                    //{
-                                    //    palabraConSNP = palabraConSNP.Replace(" ", "");
-                                    //    inicioColumna = contadorColumna;
-                                    //    contadorColumna += palabraConSNP.Length;
-                                    //    listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
-                                    //}
+                                    foreach (var letra in item)
+                                    {
+                                        if (!A_lexico.regexSimbolosPermitidos.IsMatch(letra.ToString()))
+                                        {
+                                            palabraConSNP = palabraConSNP.Replace(" ", "");
+                                            inicioColumna = contadorColumna;
+                                            contadorColumna += palabraConSNP.Length;
+                                            listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
+                                            inicioColumna = contadorColumna;
+                                            contadorColumna += letra.ToString().Length;
+                                            listaTokens.Add(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                                            palabraConSNP = string.Empty;
+                                        }
+                                        else
+                                        {
+                                            palabraConSNP += letra;
+
+                                        }
+                                    }
+                                    if (palabraConSNP != " ")
+                                    {
+                                        palabraConSNP = palabraConSNP.Replace(" ", "");
+                                        inicioColumna = contadorColumna;
+                                        contadorColumna += palabraConSNP.Length;
+                                        listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
+                                        //var resultado = A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna);
+                                        //if (resultado != "")
+                                        //{
+                                        //    listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
+                                        //}
+                                        //else
+                                        //{
+                                        //    var segundaPalabra = string.Empty;
+                                        //    foreach (var item2 in palabraConSNP)
+                                        //    {
+                                        //        segundaPalabra += item2;
+                                        //        if (A_lexico.AnalisisPalabrasSegundo(segundaPalabra, contadorLinea, inicioColumna, contadorColumna)!="")
+                                        //        {
+                                        //            listaTokens.Add(A_lexico.AnalisisPalabrasSegundo(segundaPalabra, contadorLinea, inicioColumna, contadorColumna));
+                                        //            segundaPalabra = string.Empty;
+                                        //        }
+                                        //    }
+                                        //}
+                                    }
 
                                     #region Opcion
                                     //var cantidadMatches = A_lexico.regexSimbolosPermitidos.Matches(item);
@@ -349,10 +368,12 @@ namespace MiniC
                     reader.Close();
                 }
 
-
-
+                Console.Clear();
+                Console.WriteLine("Ingrese la ruta de creacion de archivo:\n");
+                var rutaNuevoArchivo = Console.ReadLine();
+                var nombreArchivo = Path.GetFileNameWithoutExtension(ruta);
                 #region ESCRITURA ARCHIVO TXT
-                using (var archivo = new StreamWriter("C:\\Users\\Allan Dávila\\Downloads\\Proyecto - Fase #1 - Analizador léxico (Archivos de prueba)-20200823\\Compilador.txt"))
+                using (var archivo = new StreamWriter(rutaNuevoArchivo + nombreArchivo + ".out"))
                 {
 
                     foreach (var item in listaTokens)
@@ -365,7 +386,7 @@ namespace MiniC
                     archivo.Close();
                 }
                 #endregion
-                Console.WriteLine("Su archivo ha sido procesado");
+                Console.WriteLine("Su archivo ha sido procesado, creado en " + rutaNuevoArchivo + nombreArchivo + ".out");
                 Console.ReadLine();
             }
         }

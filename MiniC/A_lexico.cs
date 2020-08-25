@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Reflection.Metadata.Ecma335;
+
 namespace MiniC
 {
     public class A_lexico
@@ -34,37 +36,37 @@ namespace MiniC
             }
             if (regexPalabrasReservadas.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + "        Es Palabra Reservada Linea: " + contadorLinea + " Columna: " + inicioColumna + "-" + contadorColumna + "\n");
+                return resultadoAnalisis = (palabra + "        Es Palabra Reservada Linea: " + contadorLinea + " Columna: " + inicioColumna + "-" + contadorColumna + "\n");
             }
             else if (regexBool.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + "         Es Bool Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                return resultadoAnalisis = (palabra + "         Es Bool Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
             else if (regexDigitos.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + "         Es un Digito Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                return resultadoAnalisis = (palabra + "         Es un Digito Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
             else if (regexDouble.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + "        Es Double Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                return resultadoAnalisis = (palabra + "        Es Double Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
             else if (regexDoubleExponencial.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + "        Es Double Exponencial Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                return resultadoAnalisis = (palabra + "        Es Double Exponencial Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
             else if (regexHexadecimal.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + "        Es Hexadecimal Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                return resultadoAnalisis = (palabra + "        Es Hexadecimal Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
             else if (regexOperadores.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + "         Es Operador Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                return resultadoAnalisis = (palabra + "         Es Operador Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
             else if (regexIdentificadores.IsMatch(palabra))
             {
-                resultadoAnalisis = (palabra + "        Es Identificador Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                return resultadoAnalisis = (palabra + "        Es Identificador Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
-            return resultadoAnalisis;
+            return resultadoAnalisis = (palabra + "        Es Identificador Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
         }
     }
 }
