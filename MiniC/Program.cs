@@ -54,9 +54,7 @@ namespace MiniC
                                 foreach (var item in lineaActual)
                                 {
                                     var inicioColumna = contadorColumna;
-                                    contadorColumna += textoString.Length;
-                                    //Implementar metodo para analisis de palabras
-                                    contadorColumna += textoString.Length - 1;
+
                                     if (item == '"' && cantidadComillas == 0)
                                     {
                                         cantidadComillas++;
@@ -71,15 +69,18 @@ namespace MiniC
                                         cantidadComillas++;
                                         textoString += item;
                                     }
-
                                     if (!textoString.Contains('"') && textoString.Contains(' '))
                                     {
-                                        textoString = textoString.Trim();
+                                        //Implementar metodo para analisis de palabras
+                                        contadorColumna += textoString.Length - 1;
+                                        textoString= textoString.Trim();
                                         listaTokens.Add(A_lexico.AnalisisPalabras(textoString, contadorLinea, inicioColumna, contadorColumna));
                                         textoString = string.Empty;
                                     }
                                     else if (textoString.Contains('"') && cantidadComillas == 2)
                                     {
+                                        //Implementar metodo para analisis de palabras
+                                        contadorColumna += textoString.Length - 1;
                                         listaTokens.Add(textoString + "        Es un String Linea: " + contadorLinea + " Columna: " + inicioColumna + "-" + contadorColumna + "\n");
                                         textoString = string.Empty;
                                     }
@@ -176,8 +177,13 @@ namespace MiniC
                                 {
                                     if (lineaActual.Contains("*/"))
                                     {
+
                                         hayCierreComentario = true;
                                         break;
+                                    }
+                                    else
+                                    {
+                                        contadorLinea++;
                                     }
                                     lineaActual = reader.ReadLine();
                                 }
@@ -243,6 +249,8 @@ namespace MiniC
                                 //Si el archivo no tiene cierre de comentario hay error
                                 else
                                 {
+                                    Console.WriteLine("En linea: " + contadorLinea + " abre comentario y nunca cierra");
+
                                     listaTokens.Add("En linea: " + contadorLinea + " abre comentario y nunca cierra");
                                 }
 
@@ -280,79 +288,57 @@ namespace MiniC
                                         palabraConSNP = palabraConSNP.Replace(" ", "");
                                         inicioColumna = contadorColumna;
                                         contadorColumna += palabraConSNP.Length;
-                                        listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
-                                        //var resultado = A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna);
-                                        //if (resultado != "")
-                                        //{
-                                        //    listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
-                                        //}
-                                        //else
-                                        //{
-                                        //    var segundaPalabra = string.Empty;
-                                        //    foreach (var item2 in palabraConSNP)
-                                        //    {
-                                        //        segundaPalabra += item2;
-                                        //        if (A_lexico.AnalisisPalabrasSegundo(segundaPalabra, contadorLinea, inicioColumna, contadorColumna)!="")
-                                        //        {
-                                        //            listaTokens.Add(A_lexico.AnalisisPalabrasSegundo(segundaPalabra, contadorLinea, inicioColumna, contadorColumna));
-                                        //            segundaPalabra = string.Empty;
-                                        //        }
-                                        //    }
-                                        //}
+                                        var concatenada = string.Empty;
+                                        var concatenarDigitosPuntuacion = string.Empty;
+                                        if (A_lexico.AnalisisTodo(palabraConSNP) != 1)
+                                        {
+                                            foreach (var letra in palabraConSNP)
+                                            {
+                                                if (concatenada != string.Empty)
+                                                {
+                                                    if (concatenada.Any(char.IsDigit) || concatenada.Any(char.IsPunctuation)|| concatenada.Contains(';'))
+                                                    {
+                                                        var palabraExtraida = A_lexico.AnalisisJuntas(concatenada);
+                                                        listaTokens.Add(A_lexico.AnalisisPalabras(palabraExtraida, contadorLinea, inicioColumna, palabraExtraida.Length));
+
+                                                        try
+                                                        {
+                                                            var concatenadaSinExtraida = concatenada.Replace(palabraExtraida, "");
+                                                         
+                                                            listaTokens.Add(A_lexico.AnalisisPalabras(concatenadaSinExtraida, contadorLinea, inicioColumna, concatenadaSinExtraida.Length));
+                                                            concatenada = string.Empty;
+                                                            concatenada += letra;
+                                                        }
+                                                        catch (Exception)
+                                                        {
+                                                            concatenada += letra;
+                                                          
+                                                            listaTokens.Add(A_lexico.AnalisisPalabras(concatenada, contadorLinea, inicioColumna, concatenada.Length));
+                                                            concatenada = string.Empty;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        concatenada += letra;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    concatenada += letra;
+                                                }
+                                            }
+                                            if (concatenada != string.Empty)
+                                            {
+                                                listaTokens.Add(A_lexico.AnalisisPalabras(concatenada, contadorLinea, inicioColumna, contadorColumna));
+                                            }
+                                        }
+                                        else
+                                        {
+                                            listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
+                                        }
+                                      
                                     }
 
-                                    #region Opcion
-                                    //var cantidadMatches = A_lexico.regexSimbolosPermitidos.Matches(item);
-                                    ////No contiene caracter no permitido
-                                    //if (cantidadMatches.Count == item.Length && !esComentario)
-                                    //{
-                                    //    var inicioColumna = contadorColumna;
-                                    //    contadorColumna += item.Length - 1;
-                                    //    listaTokens.Add(A_lexico.AnalisisPalabras(item, contadorLinea, inicioColumna, contadorColumna));
-                                    //    contadorColumna = contadorColumna + 2;
-                                    //}
-
-                                    ////Caracter no permitido individual
-                                    //else if (!A_lexico.regexSimbolosPermitidos.IsMatch(item))
-                                    //{
-                                    //    var inicioColumna = contadorColumna;
-                                    //    contadorColumna += item.Length;
-                                    //    listaTokens.Add(item + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
-                                    //    contadorColumna = contadorColumna + 2;
-                                    //}
-
-                                    ////Caracter no permitido viene junto
-                                    //else
-                                    //{
-                                    //    var palabraConSNP = string.Empty;
-                                    //    var inicioColumna = 0;
-                                    //    foreach (var letra in item)
-                                    //    {
-                                    //        if (!A_lexico.regexSimbolosPermitidos.IsMatch(letra.ToString()))
-                                    //        {
-                                    //            palabraConSNP = palabraConSNP.Replace(" ", "");
-                                    //            inicioColumna = contadorColumna;
-                                    //            contadorColumna += palabraConSNP.Length;
-                                    //            listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
-                                    //            inicioColumna = contadorColumna;
-                                    //            contadorColumna += letra.ToString().Length;
-                                    //            listaTokens.Add(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
-                                    //            palabraConSNP = " ";
-                                    //        }
-                                    //        else
-                                    //        {
-                                    //            palabraConSNP += letra;
-                                    //        }
-                                    //    }
-                                    //    if (palabraConSNP != " ")
-                                    //    {
-                                    //        palabraConSNP = palabraConSNP.Replace(" ", "");
-                                    //        inicioColumna = contadorColumna;
-                                    //        contadorColumna += palabraConSNP.Length;
-                                    //        listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
-                                    //    }
-                                    //}
-                                    #endregion
                                 }
                             }
                             esComentario = false;
@@ -367,7 +353,7 @@ namespace MiniC
                     }
                     reader.Close();
                 }
-
+                Console.ReadLine();
                 Console.Clear();
                 Console.WriteLine("Ingrese la ruta de creacion de archivo:\n");
                 var rutaNuevoArchivo = Console.ReadLine();
@@ -386,7 +372,7 @@ namespace MiniC
                     archivo.Close();
                 }
                 #endregion
-                Console.WriteLine("Su archivo ha sido procesado, creado en " + rutaNuevoArchivo + nombreArchivo + ".out");
+                Console.WriteLine("Su archivo ha sido procesado \nCreado en: \n" + rutaNuevoArchivo + nombreArchivo + ".out");
                 Console.ReadLine();
             }
         }
