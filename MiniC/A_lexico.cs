@@ -18,7 +18,7 @@ namespace MiniC
         public static Regex regexDigitos = new Regex(@"^[0-9]*$");
         public static Regex regexHexadecimal = new Regex(@"^0[Xx][a-fA-F0-9+]+$");
         public static Regex regexDouble = new Regex(@"^[0-9]+\.[0-9]*$");
-        public static Regex regexDoubleExponencial = new Regex(@"^[0-9]+\.([0-9])*(E|e)\+[0-9]+$");
+        public static Regex regexDoubleExponencial = new Regex(@"^[0-9]+\.([0-9])*(E|e)(\+|\-)?[0-9]+$");
         //Falta completar
         public static char asciiComillas = '"';
         public static Regex regexOperadores = new Regex(@"^(\+|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\&\&|\|\||\!|\;|\,|\.|\[|\]|\(|\)|\{|\}|\[\]|\(\)|\{\})$");
@@ -26,7 +26,7 @@ namespace MiniC
         public static Regex regexIden = new Regex(@"^(\w)(;)$");
         public static Regex regexFinComentario = new Regex(@"^*/$
 ");
-
+      
         public static string AnalisisPalabras(string palabra, int contadorLinea, int inicioColumna, int contadorColumna)
         {
             var resultadoAnalisis = string.Empty;
