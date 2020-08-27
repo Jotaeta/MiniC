@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.IO;
-using System.Reflection.Metadata.Ecma335;
 
 namespace MiniC
 {
@@ -22,12 +18,14 @@ namespace MiniC
         public static Regex regexDigitos = new Regex(@"^[0-9]*$");
         public static Regex regexHexadecimal = new Regex(@"^0[Xx][a-fA-F0-9+]+$");
         public static Regex regexDouble = new Regex(@"^[0-9]+\.[0-9]*$");
-        public static Regex regexDoubleExponencial = new Regex(@"^[0-9]+\.E\+[0-9]+$");
+        public static Regex regexDoubleExponencial = new Regex(@"^[0-9]+\.([0-9])*(E|e)\+[0-9]+$");
         //Falta completar
         public static char asciiComillas = '"';
         public static Regex regexOperadores = new Regex(@"^(\+|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\&\&|\|\||\!|\;|\,|\.|\[|\]|\(|\)|\{|\}|\[\]|\(\)|\{\})$");
         public static Regex regexSimbolosPermitidos = new Regex(@"(\+|\s|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\&\&|\|\||\!|\;|\,|\.|\[|\]|\(|\)|\{|\}|\[\]|\(\)|\{\}|\w)");
         public static Regex regexIden = new Regex(@"^(\w)(;)$");
+        public static Regex regexFinComentario = new Regex(@"^*/$
+");
 
         public static string AnalisisPalabras(string palabra, int contadorLinea, int inicioColumna, int contadorColumna)
         {
@@ -64,6 +62,11 @@ namespace MiniC
             {
                 return resultadoAnalisis = (palabra + "         Es Operador Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
+            else if (regexFinComentario.IsMatch(palabra))
+            {
+                Console.WriteLine(palabra + "        Es Fin de Comentario Sin Emparejar Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                return resultadoAnalisis = (palabra+ "        Es Fin de Comentario Sin Emparejar Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+            }
             else if (regexIdentificadores.IsMatch(palabra))
             {
                 if (palabra.Length>31)
@@ -82,7 +85,7 @@ namespace MiniC
                 }
                 return resultadoAnalisis = (palabra + "        Es Identificador Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
             }
-            return "" /*resultadoAnalisis = (palabra + "        Es Identificador Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n")*/;
+            return "" ;
         }
 
         public static string AnalisisJuntas(string palabra)

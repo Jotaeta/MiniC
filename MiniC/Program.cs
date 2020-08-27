@@ -2,23 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.WebSockets;
-using System.Text.RegularExpressions;
 namespace MiniC
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-
-
-            // COMENTARIOS DE UNA LINEA TERMINAR (VIERNES) 
-            // STRINGS  (VIERNES)
-            // PALABRAS JUNTAS (MATCH O COMO HICIMOS LOS CARACTERES) (VIERNES O SABADO)
-            // ESCRIBIR EN ARCHIVO (SABADO)
-            // MANEJO DE ERRORES VERIFICARLOS (SABADO) 
-            // OPTIMIZAR CODIGO (DEPENDE DE LAS INSTRUCCIONES)
-
             var listaTokens = new List<string>();
             var ruta = string.Empty;
             var contadorLinea = 1;
@@ -69,11 +58,12 @@ namespace MiniC
                                         cantidadComillas++;
                                         textoString += item;
                                     }
+
                                     if (!textoString.Contains('"') && textoString.Contains(' '))
                                     {
                                         //Implementar metodo para analisis de palabras
                                         contadorColumna += textoString.Length - 1;
-                                        textoString= textoString.Trim();
+                                        textoString = textoString.Trim();
                                         listaTokens.Add(A_lexico.AnalisisPalabras(textoString, contadorLinea, inicioColumna, contadorColumna));
                                         textoString = string.Empty;
                                     }
@@ -89,6 +79,11 @@ namespace MiniC
                                         textoString = string.Empty;
                                         break;
                                     }
+                                }
+                                if (textoString != string.Empty)
+                                {
+                                    listaTokens.Add("Error un String nunca Cierra Linea: " + contadorLinea + "\n");
+                                    Console.WriteLine("Error un String nunca Cierra Linea: " + contadorLinea + "\n");
                                 }
                             }
                             //Linea con comentario de una linea
@@ -271,11 +266,32 @@ namespace MiniC
                                             palabraConSNP = palabraConSNP.Replace(" ", "");
                                             inicioColumna = contadorColumna;
                                             contadorColumna += palabraConSNP.Length;
-                                            listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
-                                            inicioColumna = contadorColumna;
-                                            contadorColumna += letra.ToString().Length;
-                                            listaTokens.Add(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
-                                            palabraConSNP = string.Empty;
+                                            //
+                                            try
+                                            {
+                                                var palabraExtraida = A_lexico.AnalisisJuntas(palabraConSNP);
+                                                listaTokens.Add(A_lexico.AnalisisPalabras(palabraExtraida, contadorLinea, inicioColumna, palabraExtraida.Length));
+
+                                                var concatenadaSinExtraida = palabraConSNP.Replace(palabraExtraida, "");
+
+                                                listaTokens.Add(A_lexico.AnalisisPalabras(concatenadaSinExtraida, contadorLinea, inicioColumna, concatenadaSinExtraida.Length));
+                                                palabraConSNP = string.Empty;
+                                                palabraConSNP += letra;
+                                                inicioColumna = contadorColumna;
+                                                contadorColumna += letra.ToString().Length;
+                                                listaTokens.Add(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                                                palabraConSNP = string.Empty;
+                                            }
+                                            catch 
+                                            {
+                                                inicioColumna = contadorColumna;
+                                                contadorColumna += letra.ToString().Length;
+                                                listaTokens.Add(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
+                                                palabraConSNP = string.Empty;
+                                            }
+                                            //
+                                            //listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
+                                            
                                         }
                                         else
                                         {
@@ -296,7 +312,7 @@ namespace MiniC
                                             {
                                                 if (concatenada != string.Empty)
                                                 {
-                                                    if (concatenada.Any(char.IsDigit) || concatenada.Any(char.IsPunctuation)|| concatenada.Contains(';'))
+                                                    if (concatenada.Any(char.IsDigit) || concatenada.Any(char.IsPunctuation))
                                                     {
                                                         var palabraExtraida = A_lexico.AnalisisJuntas(concatenada);
                                                         listaTokens.Add(A_lexico.AnalisisPalabras(palabraExtraida, contadorLinea, inicioColumna, palabraExtraida.Length));
@@ -304,7 +320,7 @@ namespace MiniC
                                                         try
                                                         {
                                                             var concatenadaSinExtraida = concatenada.Replace(palabraExtraida, "");
-                                                         
+
                                                             listaTokens.Add(A_lexico.AnalisisPalabras(concatenadaSinExtraida, contadorLinea, inicioColumna, concatenadaSinExtraida.Length));
                                                             concatenada = string.Empty;
                                                             concatenada += letra;
@@ -312,19 +328,42 @@ namespace MiniC
                                                         catch (Exception)
                                                         {
                                                             concatenada += letra;
-                                                          
-                                                            listaTokens.Add(A_lexico.AnalisisPalabras(concatenada, contadorLinea, inicioColumna, concatenada.Length));
+                                                            if (concatenada.Contains(';'))
+                                                            {
+                                                                var textoSinPC = concatenada.Replace(";", "");
+                                                                listaTokens.Add(A_lexico.AnalisisPalabras(textoSinPC, contadorLinea, inicioColumna, textoSinPC.Length));
+                                                                listaTokens.Add(A_lexico.AnalisisPalabras(";", contadorLinea, inicioColumna, 1));
+                                                            }
+                                                            else
+                                                            {
+                                                                listaTokens.Add(A_lexico.AnalisisPalabras(concatenada, contadorLinea, inicioColumna, concatenada.Length));
+                                                            }
                                                             concatenada = string.Empty;
                                                         }
                                                     }
                                                     else
                                                     {
                                                         concatenada += letra;
+
+                                                        if (concatenada.Contains(';'))
+                                                        {
+                                                            var textoSinPC = concatenada.Replace(";", "");
+                                                            listaTokens.Add(A_lexico.AnalisisPalabras(textoSinPC, contadorLinea, inicioColumna, textoSinPC.Length));
+                                                            listaTokens.Add(A_lexico.AnalisisPalabras(";", contadorLinea, inicioColumna, 1));
+                                                            concatenada = string.Empty;
+                                                        }
                                                     }
                                                 }
                                                 else
                                                 {
                                                     concatenada += letra;
+                                                    if (concatenada.Contains(';'))
+                                                    {
+                                                        var textoSinPC = concatenada.Replace(";", "");
+                                                        listaTokens.Add(A_lexico.AnalisisPalabras(textoSinPC, contadorLinea, inicioColumna, textoSinPC.Length));
+                                                        listaTokens.Add(A_lexico.AnalisisPalabras(";", contadorLinea, inicioColumna, 1));
+                                                        concatenada = string.Empty;
+                                                    }
                                                 }
                                             }
                                             if (concatenada != string.Empty)
@@ -336,7 +375,7 @@ namespace MiniC
                                         {
                                             listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
                                         }
-                                      
+
                                     }
 
                                 }
