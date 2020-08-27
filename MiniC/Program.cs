@@ -15,7 +15,7 @@ namespace MiniC
             var esComentario = false;
             var hayCierreComentario = false;
 
-            Console.WriteLine("\n\t Allan Davila 1160118\n\t Jonathan Argueta 1029418\n");
+            Console.WriteLine("\tMINI C\n\t Allan Davila 1160118\n\t Jonathan Argueta 1029418\n");
             Console.ReadLine();
             Console.Clear();
             Console.WriteLine("Ingrese Ruta de Archivo: ");
@@ -26,7 +26,6 @@ namespace MiniC
             }
             else
             {
-
                 using (var reader = new StreamReader(new FileStream(ruta, FileMode.Open)))
                 {
                     try
@@ -104,13 +103,6 @@ namespace MiniC
                                     }
                                 }
                             }
-                            //Linea con comentarios de multiple linea  en una linea 
-                            else if (A_lexico.regexComentariosMultipleLine.IsMatch(lineaActual))
-                            {
-                                var splitInicioComentario = lineaActual.Split("/*");
-                                var splitFinComentario = lineaActual.Split("*/");
-                                //Agregar analisis
-                            }
                             //Linea con comentarios de multiple linea 
                             else if (A_lexico.regexComentariosMultipleLineCaso.IsMatch(lineaActual))
                             {
@@ -133,6 +125,7 @@ namespace MiniC
                                     {
                                         var inicioColumna = contadorColumna;
                                         contadorColumna += item.Length;
+                                        Console.WriteLine(item + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                         listaTokens.Add(item + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                     }
                                     //Caracter no permitido viene junto
@@ -150,6 +143,7 @@ namespace MiniC
                                                 listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
                                                 inicioColumna = contadorColumna;
                                                 contadorColumna += letra.ToString().Length;
+                                                Console.WriteLine(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                                 listaTokens.Add(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                                 palabraConSNP = " ";
                                             }
@@ -205,6 +199,7 @@ namespace MiniC
                                         {
                                             var inicioColumna = contadorColumna;
                                             contadorColumna += item.Length;
+                                            Console.WriteLine(item + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                             listaTokens.Add(item + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                         }
                                         //Caracter no permitido viene junto
@@ -222,6 +217,7 @@ namespace MiniC
                                                     listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
                                                     inicioColumna = contadorColumna;
                                                     contadorColumna += letra.ToString().Length;
+                                                    Console.WriteLine(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                                     listaTokens.Add(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                                     palabraConSNP = " ";
                                                 }
@@ -279,6 +275,7 @@ namespace MiniC
                                                 palabraConSNP += letra;
                                                 inicioColumna = contadorColumna;
                                                 contadorColumna += letra.ToString().Length;
+                                                Console.WriteLine(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                                 listaTokens.Add(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                                 palabraConSNP = string.Empty;
                                             }
@@ -286,12 +283,11 @@ namespace MiniC
                                             {
                                                 inicioColumna = contadorColumna;
                                                 contadorColumna += letra.ToString().Length;
+                                                Console.WriteLine(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                                 listaTokens.Add(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                                 palabraConSNP = string.Empty;
                                             }
-                                            //
-                                            //listaTokens.Add(A_lexico.AnalisisPalabras(palabraConSNP, contadorLinea, inicioColumna, contadorColumna));
-                                            
+                                            //                                            
                                         }
                                         else
                                         {
