@@ -1,0 +1,3 @@
+void ident ( bool ident , ) for ( ; ident ; intConstant / intConstant ) doubleConstant . ident ; Print ( ! ident && ident == New(ident) , ) ;
+void ident ( ident ident , )
+double [] ident ;

@@ -1,0 +1,6 @@
+double [] ident ;
+bool ident ;
+void ident ( )
+ident ident ( ident ident , )
+int ident ( string [] ident , ) return ( ident ) ; Print ( ident = null , ) ;
+void ident ( ) Print ( ( ( ident >= ident ) ) , ) ;

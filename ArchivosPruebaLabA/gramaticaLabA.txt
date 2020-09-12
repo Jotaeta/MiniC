@@ -1,0 +1,58 @@
+program -> Decl+
+
+Decl -> VariableDecl Decl'| FunctionDecl Decl'
+Decl'->	Decl Decl' | eps
+
+--VariableDecl -> Variable ;
+
+--Variable -> Type ident
+
+--Type ->  int Type' | double Type' | bool Type' 
+	| string Type' | ident Type'
+
+--Type' -> [] Type' | eps
+
+--FunctionDecl -> Type ident ( Formals ) Stmt* 
+		| void ident ( Formals ) Stmt*
+
+--Stmt -> IfStmt | ForStmt | Expr ; | ReturnStmt | PrintStmt 
+
+--Formals -> Variable+ , | eps
+
+--IfStmt -> if ( Expr ) Stmt (else Stmt)?
+
+--ForStmt -> for ( Expr? ; Expr ; Expr? ) Stmt
+
+--ReturnStmt -> return Expr? ;
+
+--PrintStmt -> Print ( Expr+ , ) ;
+
+Expr -> Expr' Expr''
+Expr' -> - Expr | ! Expr | 
+	New(ident)  | LValue = Expr  | 
+	Constant  | LValue | this |
+	( Expr )
+
+Expr''->  + Expr |  - Expr |  * Expr |
+	 / Expr | % Expr |  < Expr |
+	 <= Expr |  > Expr |  >= Expr | 
+	 == Expr |  != Expr |  && Expr | 
+	 . ident |  [ Expr ] | eps
+
+--LValue -> ident 
+
+--Constant -> intConstant | doubleConstant | boolConstant 
+		| stringConstant | null
+
+
+
+
+
+
+
+
+
+
+
+
+

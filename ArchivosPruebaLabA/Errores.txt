@@ -1,0 +1,5 @@
+void ident ( ident ident )
+double [] ;
+void ident ( ) for ; this ; ) this ;
+int ident ( ) if ( null = this ) ident ;
+double

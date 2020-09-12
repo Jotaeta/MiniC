@@ -6,7 +6,7 @@ namespace MiniC
     {
         public static void Parse_Program()
         {
-            //Validar Decl
+            //Eliminar corridas con otro metodo
             var corridas = 0;
             var cantidad = 0;
             var bandera = false;
@@ -49,15 +49,14 @@ namespace MiniC
                 {
                     FunctionDecl();
                 }
-                else
-                {
-                    Console.WriteLine("SYNTAX ERROR Posee un error de (;).");
-                }
-
             }
             else if (Singleton.Instance.analizada == "void")
             {
                 FunctionDecl();
+            }
+            else
+            {
+                Console.WriteLine("SYNTAX ERROR Posee un error de (;).");
             }
         }
 

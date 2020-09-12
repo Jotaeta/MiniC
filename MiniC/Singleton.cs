@@ -37,7 +37,7 @@ namespace MiniC
             }
             else
             {
-                Console.WriteLine("Se esperaba ("+ analizar+") Se recibio el simbolo (" + analizada + ") que no corresponde con la gramatica en linea "+contadotLinea);
+                Console.WriteLine("Se esperaba ("+ analizar+") Se recibio el simbolo (" + Lista_palabras[contador - 1].ToString() + ") que no corresponde con la gramatica en linea "+contadotLinea);
                 hayError = true;
             }
         }
