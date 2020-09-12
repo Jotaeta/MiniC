@@ -2,16 +2,17 @@
 
 namespace MiniC
 {
-    class Laboratorio1
+    public static class Laboratorio1
     {
-        public void Parse_Program()
+        public static void Parse_Program()
         {
             //Validar Decl
+            var corridas = 0;
             var cantidad = 0;
             var bandera = false;
             while (!bandera)
             {
-                if (Singleton.Instance.analizada != null)
+                if (Singleton.Instance.analizada != Singleton.Instance.Lista_palabras[Singleton.Instance.Lista_palabras.Count - 1])
                 {
                     Parse_Decl();
                     cantidad++;
@@ -20,27 +21,37 @@ namespace MiniC
                 {
                     bandera = true;
                 }
+                corridas++;
+                if (corridas >= 15)
+                {
+                    bandera = true;
+                }
             }
             if (cantidad == 0)
             {
-                Console.WriteLine("Syntax Error");
+
+                Singleton.Instance.hayError = true;
+
             }
         }
 
-        public void Parse_Decl()
+        public static void Parse_Decl()
         {
             if (Singleton.Instance.analizada == "int" || Singleton.Instance.analizada == "double" || Singleton.Instance.analizada == "bool" || Singleton.Instance.analizada == "string"
                 || Singleton.Instance.analizada == "ident")
             {
-                // Crear una validacion para estas
-                if (Singleton.Instance.analizada == "[]")
+
+                if (Singleton.Instance.Lista_palabras[Singleton.Instance.contador + 1] == ";" || Singleton.Instance.Lista_palabras[Singleton.Instance.contador + 2] == ";")
                 {
                     Variable_DECL();
+                }
+                else if (Singleton.Instance.Lista_palabras[Singleton.Instance.contador + 1] == "(" || Singleton.Instance.Lista_palabras[Singleton.Instance.contador + 2] == "(")
+                {
                     FunctionDecl();
                 }
-                if (Singleton.Instance.analizada == "ident")
+                else
                 {
-
+                    Console.WriteLine("SYNTAX ERROR Posee un error de (;).");
                 }
 
             }
@@ -48,21 +59,17 @@ namespace MiniC
             {
                 FunctionDecl();
             }
-            else
-            {
-                Parse_Decl();
-            }
         }
 
         //Terminada
-        public void Variable_DECL()
+        public static void Variable_DECL()
         {
             Variable();
             Singleton.Instance.matchtoken(";");
         }
 
         //Terminada
-        public void Variable()
+        public static void Variable()
         {
             if (Singleton.Instance.analizada == "int" || Singleton.Instance.analizada == "double" || Singleton.Instance.analizada == "bool" || Singleton.Instance.analizada == "string" || Singleton.Instance.analizada == "ident")
             {
@@ -71,12 +78,13 @@ namespace MiniC
             }
             else
             {
-                Console.WriteLine("SYSTAX ERROR");
+            Singleton.Instance.hayError = true;
+
             }
         }
 
         //Terminada
-        public void Type()
+        public static void Type()
         {
             if (Singleton.Instance.analizada == "int")
             {
@@ -106,12 +114,13 @@ namespace MiniC
 
             else
             {
-                Console.WriteLine("SYSTAX ERROR");
+            Singleton.Instance.hayError = true;
+
             }
         }
 
         //Terminada
-        public void Ttype()
+        public static void Ttype()
         {
             if (Singleton.Instance.analizada == "[]")
             {
@@ -125,7 +134,7 @@ namespace MiniC
         }
 
         //Terminada
-        public void FunctionDecl()
+        public static void FunctionDecl()
         {
             if (Singleton.Instance.analizada == "int" || Singleton.Instance.analizada == "double" || Singleton.Instance.analizada == "bool" || Singleton.Instance.analizada == "string" || Singleton.Instance.analizada == "ident")
             {
@@ -148,10 +157,6 @@ namespace MiniC
                         bandera = true;
                     }
                 }
-                if (cantidad == 0)
-                {
-                    Console.WriteLine("Syntax Error");
-                }
             }
             else if (Singleton.Instance.analizada == "void")
             {
@@ -160,8 +165,9 @@ namespace MiniC
                 Singleton.Instance.matchtoken("(");
                 Formals();
                 Singleton.Instance.matchtoken(")");
+                var bandera = false;
                 var cantidad = 0;
-                while (true)
+                while (!bandera)
                 {
                     if (Singleton.Instance.analizada == "if" || Singleton.Instance.analizada == "for" || Singleton.Instance.analizada == "return" || Singleton.Instance.analizada == "Print" || Singleton.Instance.analizada == "!" || Singleton.Instance.analizada == "-" || Singleton.Instance.analizada == "(" || Singleton.Instance.analizada == "ident" || Singleton.Instance.analizada == "this" || Singleton.Instance.analizada == "New(ident)" || Singleton.Instance.analizada == "intConstant" || Singleton.Instance.analizada == "doubleConstant" || Singleton.Instance.analizada == "boolConstant" || Singleton.Instance.analizada == "stringConstant" || Singleton.Instance.analizada == "null")
                     {
@@ -170,22 +176,19 @@ namespace MiniC
                     }
                     else
                     {
-                        break;
+                        bandera = true;
                     }
-                }
-                if (cantidad == 0)
-                {
-                    Console.WriteLine("Syntax Error");
                 }
             }
             else
             {
-                Console.WriteLine("SYNTAX ERROR");
+                Singleton.Instance.hayError = true;
+
             }
         }
 
         //Terminada
-        public void Stmt()
+        public static void Stmt()
         {
             if (Singleton.Instance.analizada == "if")
             {
@@ -194,7 +197,7 @@ namespace MiniC
 
             else if (Singleton.Instance.analizada == "for")
             {
-                IfStmt();
+                ForStmt();
             }
 
             else if (Singleton.Instance.analizada == "!" || Singleton.Instance.analizada == "-" || Singleton.Instance.analizada == "(" || Singleton.Instance.analizada == "ident"
@@ -218,12 +221,13 @@ namespace MiniC
 
             else
             {
-                Console.WriteLine("SYSTAX ERROR");
+                Singleton.Instance.hayError = true;
+
             }
         }
 
         //Terminada
-        public void Formals()
+        public static void Formals()
         {
             var cantidad = 0;
             var bandera = false;
@@ -232,6 +236,7 @@ namespace MiniC
                 if (Singleton.Instance.analizada == "int" || Singleton.Instance.analizada == "double" || Singleton.Instance.analizada == "bool" || Singleton.Instance.analizada == "string" || Singleton.Instance.analizada == "ident")
                 {
                     Variable();
+
                     cantidad++;
                 }
                 else
@@ -239,18 +244,19 @@ namespace MiniC
                     bandera = true;
                 }
             }
-            if (cantidad <= 1)
+            if (cantidad == 0)
             {
-                Singleton.Instance.matchtoken(",");
+
             }
             else
             {
-                Console.WriteLine("Syntax Error");
+                Singleton.Instance.matchtoken(",");
+
             }
         }
 
         //Terminada
-        public void IfStmt()
+        public static void IfStmt()
         {
             Singleton.Instance.matchtoken("if");
             Singleton.Instance.matchtoken("(");
@@ -272,7 +278,7 @@ namespace MiniC
         }
 
         //Terminada
-        public void ForStmt()
+        public static void ForStmt()
         {
             Singleton.Instance.matchtoken("for");
             Singleton.Instance.matchtoken("(");
@@ -301,7 +307,7 @@ namespace MiniC
         }
 
         //Terminada
-        public void ReturnStmt()
+        public static void ReturnStmt()
         {
             Singleton.Instance.matchtoken("return");
             //Validar Expr
@@ -316,7 +322,7 @@ namespace MiniC
         }
 
         //Terminada
-        public void PrintStmt()
+        public static void PrintStmt()
         {
             Singleton.Instance.matchtoken("Print");
             Singleton.Instance.matchtoken("(");
@@ -346,19 +352,21 @@ namespace MiniC
             }
             else
             {
-                Console.WriteLine("Syntax Error");
+
+                Singleton.Instance.hayError = true;
+
             }
         }
 
         //Terminada
-        public void Expr()
+        public static void Expr()
         {
             ExprPrima();
             ExprBiprima();
 
         }
         //EXPR PRIMA 
-        public void ExprPrima()
+        public static void ExprPrima()
         {
 
             if (Singleton.Instance.analizada == "-")
@@ -414,12 +422,13 @@ namespace MiniC
 
             else
             {
-                Console.WriteLine("SYNTAX ERROR");
+
+                Singleton.Instance.hayError = true;
             }
         }
 
         //EXPR BIPRIMA 
-        public void ExprBiprima()
+        public static void ExprBiprima()
         {
 
             if (Singleton.Instance.analizada == "+")
@@ -496,24 +505,13 @@ namespace MiniC
             }
             else
             {
-                Console.WriteLine("SYNTAX ERROR");
+
             }
 
         }
 
         //Terminada
-        public void Parse_EExp()
-        {
-            if (Singleton.Instance.analizada == "||")
-            {
-                Singleton.Instance.matchtoken("||");
-                Parse_EExp();
-            }
-            else { }
-        }
-
-        //Terminada
-        public void Parse_LValue()
+        public static void Parse_LValue()
         {
             if (Singleton.Instance.analizada == "ident")
             {
@@ -521,12 +519,13 @@ namespace MiniC
             }
             else
             {
-                Console.WriteLine("SYSTAX ERROR");
+                Singleton.Instance.hayError = true;
+
             }
         }
 
         //Terminada
-        public void Parse_Constant()
+        public static void Parse_Constant()
         {
             if (Singleton.Instance.analizada == "intConstant")
             {
@@ -550,7 +549,8 @@ namespace MiniC
             }
             else
             {
-                Console.WriteLine("SYSTAX ERROR");
+                Singleton.Instance.hayError = true;
+
             }
         }
 

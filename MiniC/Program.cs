@@ -421,7 +421,43 @@ namespace MiniC
             }
             if (opc == 2)
             {
+                Console.WriteLine("Ingrese Ruta de Archivo: ");
+                ruta = Console.ReadLine();
+                if (!File.Exists(ruta))
+                {
+                    Console.WriteLine("Ingrese un Archivo Valido");
+                }
+                else
+                {
+                    using (var reader = new StreamReader(new FileStream(ruta, FileMode.Open))) 
+                    {
+                        try
+                        {
+                            var lineaActual = string.Empty;
+                            lineaActual = reader.ReadLine();
+                            while (lineaActual != null)
+                            {
+                                Singleton.Instance.Lista_palabras = lineaActual.Split(" ").ToList();
+                                Singleton.Instance.analizada = Singleton.Instance.Lista_palabras[0];
+                                
+                                Laboratorio1.Parse_Program();
+                                lineaActual = reader.ReadLine();
+                                Singleton.Instance.contador = 1;
+                                Singleton.Instance.contadotLinea++;
+                            }
+                        }
+                        catch (Exception)
+                        {
 
+                        }
+                    }
+                    if (!Singleton.Instance.hayError)
+                    {
+                        Console.WriteLine("Analizado exitosamente!");
+                        Console.ReadKey();
+                    }
+                    Console.ReadKey();
+                }
             }
             else {
                 Console.WriteLine("ERROR ninguna opcion es valida");

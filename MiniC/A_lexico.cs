@@ -6,8 +6,8 @@ namespace MiniC
     public class A_lexico
     {
         public static Regex regexEspacioEnBlanco = new Regex(@"\s");
-        public static Regex regexPalabrasReservadas = new Regex(@"^(void|int|double|bool|string|class|const|interface|null|this|for|while|foreach|if|else|return|break|New|NewArray|Console|WriteLine)$");
-        public static Regex regexPalabrasReservadas2 = new Regex(@"(void|int|double|bool|string|class|const|interface|null|this|for|while|foreach|if|else|return|break|New|NewArray|Console|WriteLine)");
+        public static Regex regexPalabrasReservadas = new Regex(@"^(Print|void|int|double|bool|string|class|const|interface|null|this|for|while|foreach|if|else|return|break|New|NewArray|Console|WriteLine)$");
+        public static Regex regexPalabrasReservadas2 = new Regex(@"(Print|void|int|double|bool|string|class|const|interface|null|this|for|while|foreach|if|else|return|break|New|NewArray|Console|WriteLine)");
         public static Regex regexIdentificadores = new Regex(@"^[a-zA-z]+(\w)*$");
         public static Regex regexIdentificadores2 = new Regex(@"[a-zA-z]+(\w)*");
         //Falta completar
@@ -21,8 +21,8 @@ namespace MiniC
         public static Regex regexDoubleExponencial = new Regex(@"^[0-9]+\.([0-9])*(E|e)(\+|\-)?[0-9]+$");
         //Falta completar
         public static char asciiComillas = '"';
-        public static Regex regexOperadores = new Regex(@"^(\+|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\&\&|\|\||\!|\;|\,|\.|\[|\]|\(|\)|\{|\}|\[\]|\(\)|\{\})$");
-        public static Regex regexSimbolosPermitidos = new Regex(@"(\+|\s|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\&\&|\|\||\!|\;|\,|\.|\[|\]|\(|\)|\{|\}|\[\]|\(\)|\{\}|\w)");
+        public static Regex regexOperadores = new Regex(@"^(:|\+|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\&\&|\|\||\!|\;|\,|\.|\[|\]|\(|\)|\{|\}|\[\]|\(\)|\{\})$");
+        public static Regex regexSimbolosPermitidos = new Regex(@"(:|\+|\s|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\&\&|\|\||\!|\;|\,|\.|\[|\]|\(|\)|\{|\}|\[\]|\(\)|\{\}|\w)");
         public static Regex regexIden = new Regex(@"^(\w)(;)$");
         public static Regex regexFinComentario = new Regex(@"^*/$
 ");
