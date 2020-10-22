@@ -44,10 +44,42 @@ namespace MiniC
                         }
                       lineaActual = reader.ReadLine();
                     }
+                }
+            }
+        }
 
-                    var aux = "perra";
+        public void CargarGramatica()
+        {
+            string ruta = string.Empty;
+            if (!File.Exists("GRAMATICA.TXT"))
+            {
+                Console.WriteLine("Ingrese un Archivo Valido");
+            }
+            else
+            {
+                using (var reader = new StreamReader(new FileStream("GRAMATICA.TXT", FileMode.Open)))
+                {
+                    var lineaActual = string.Empty;
+                    lineaActual = reader.ReadLine();
 
+                    while (lineaActual != null)
+                    {
+                        lineaActual = lineaActual.TrimEnd();
+                        lineaActual = lineaActual.TrimStart();
 
+                        var AccionEstado = lineaActual.Split(new string[] { "->" }, StringSplitOptions.None);
+
+                        if (AccionEstado.Count() == 2)
+                        {
+                            Singleton.Instance.Gramatica.Add(AccionEstado[0], AccionEstado[1]);
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error");
+                        }
+                        lineaActual = reader.ReadLine();
+                    }
                 }
             }
         }
