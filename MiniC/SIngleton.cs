@@ -18,5 +18,7 @@ namespace MiniC
             }
         }
         public Dictionary <string , string> Estados = new Dictionary <string, string> ();
-            }
+        public Dictionary<string, string> Gramatica = new Dictionary<string, string>();
+
+    }
 }
