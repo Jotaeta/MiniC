@@ -1,0 +1,89 @@
+﻿0#id s2
+0#:= 
+0#num
+0#$
+0#S 1
+0#V 3
+0#E
+
+
+1#id 
+1#:= 
+1#num
+1#$ Aceptar
+1#S 
+1#V 
+1#E
+
+
+2#id 
+2#:= r3
+2#num 
+2#$ r1
+2#S 
+2#V 
+2#E
+
+
+3#id 
+3#:= d4
+3#num 
+3#$ r1
+3#S 
+3#V 
+3#E
+
+
+4#id s8
+4#:= 
+4#num s7
+4#$ 
+4#S 
+4#V 6
+4#E 5
+
+
+
+
+
+
+
+
+
+
+5#id null
+5#:= null
+5#num null
+5#$ r2
+5#S null
+5#V null
+5#E null
+
+
+
+
+6#id null
+6#:= null
+6#num null
+6#$ r4
+6#S null
+6#V null
+6#E null
+
+
+7#id null
+7#:= null
+7#num null
+7#$ r5
+7#S null
+7#V null
+7#E null
+
+
+8#id null
+8#:= null
+8#num null
+8#$ r3
+8#S null
+8#V null
+8#E null
