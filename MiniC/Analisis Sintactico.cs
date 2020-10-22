@@ -24,6 +24,7 @@ namespace MiniC
                     while (lineaActual != null)
                     {
                         lineaActual = lineaActual.TrimEnd();
+                        lineaActual = lineaActual.TrimStart();
 
                         var AccionEstado  = lineaActual.Split(" ");
                         
@@ -38,7 +39,7 @@ namespace MiniC
                                 ///////AGREGAR A DICCIONARIO
                                 ///
 
-                                Singleton.Instance.Estados.Add(AccionEstado[0], "Error\n" );
+                                Singleton.Instance.Estados.Add(AccionEstado[0], "null");
                             }
                         }
                       lineaActual = reader.ReadLine();
