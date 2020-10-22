@@ -8,12 +8,22 @@ namespace MiniC
     {
         static void Main()
         {
+
+
+
+            Analisis_Sintactico AS = new Analisis_Sintactico();
+            AS.ListadoPalabras();
+
             var listaTokens = new List<string>();
             var ruta = string.Empty;
             var contadorLinea = 1;
             var contadorColumna = 0;
             var esComentario = false;
             var hayCierreComentario = false;
+
+
+
+
 
             Console.WriteLine("\tMINI C\n\t Allan Davila 1160118\n\t Jonathan Argueta 1029418\n");
             Console.ReadLine();
