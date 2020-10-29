@@ -447,36 +447,13 @@ namespace MiniC
             }
             listaEntrada.Add("$");
                 //Inicializar pila
-                pilaEstados.Push("0");
+            pilaEstados.Push("0");
             var estadoAnterior = string.Empty;
             var estadoActual = string.Empty;
 
-            //entrada: id := id $ 
-            //entrada: 1  2  3  4
-            //pila: 0
-            //Se busca key 0#id
-            //accion=Singleton.Instance.Diccionario.KeyWhere(peek+"#"+)
-            //Accion: d2
-            //Lista simbolo: 0
-            //Accion d2
-            //var instruccion= accion.substring(0,1)    d
-            //var estadoTarget =accion.Replace(instruccion,"")      2
-
-
-
-            //entrada: := id $
-            //entrada: 1  2  3
-            //pila: 0 
-            //Lista simbolo: 
-            //Accion 
-
-            //while (pilaEstados.Peek() !="19" &&  listaEntrada[0]!="$" && estadoAnterior!="acc")
-            //{
-
-            //}
             try
             {
-                while (pilaEstados.Peek() != "1" && listaEntrada[0] != "$" && estadoActual != "Aceptar")
+                while ((estadoActual != "acc"))
                 {
                     Singleton.Instance.Estados.TryGetValue(pilaEstados.Peek() + "#" + listaEntrada[0], out estadoActual);
                     var instruccion = estadoActual.Substring(0, 1);
@@ -500,21 +477,24 @@ namespace MiniC
                     else if (instruccion.Contains("r"))
                     {
                         var reduccion=Singleton.Instance.Gramatica.Keys.Where(key => key.Contains(estadoTarget + "#")).FirstOrDefault();
-                        
-                        var aux2 = "hola";
-
-
-                    }
-                    else if (instruccion == estadoTarget)
-                    {
-                        if (estadoAnterior.Contains("r"))
+                        var produccionReducir= Singleton.Instance.Gramatica[reduccion];
+                        produccionReducir = produccionReducir.TrimStart();
+                        produccionReducir = produccionReducir.TrimEnd();
+                        var cantidadReduccion = produccionReducir.Split(' ').Count();
+                        for (int i = 0; i < cantidadReduccion; i++)
                         {
-
+                            listaSimbolos.RemoveAt(listaSimbolos.Count() - 1);
                         }
+                        listaSimbolos.Add(reduccion.Split('#')[1]);
+                        for (int i = 0; i < cantidadReduccion; i++)
+                        {
+                            pilaEstados.Pop();
+                        }
+                        estadoAnterior= instruccion + estadoTarget;
+                        Singleton.Instance.Estados.TryGetValue(pilaEstados.Peek() + "#" + listaSimbolos[listaSimbolos.Count()-1], out estadoActual);
+                        pilaEstados.Push(estadoActual);
+                                           
                     }
-
-                    var aux = "hola";
-
                 }
 
             }
@@ -523,7 +503,7 @@ namespace MiniC
                 Console.WriteLine("Entrada no aceptada.");
                 throw;
             }
-
+            Console.Write("La entrada ha sido aceptada correctamente");
             Console.ReadLine();
         }
     }
