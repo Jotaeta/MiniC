@@ -38,3 +38,105 @@ El proyecto trabaja de la siguiente forma, le pide al usuario que ingrese una ru
 •Identificadores no sean mayor a 31 char: al encontrar un indentificador con la función regex este entra a una validación donde se valida la longitud de dicho identificador, si el tamaño del identificador es mayor a 31 automaticamente se obtienen los primeros 31 carácteres mostrandose en el archivo.
 
 Luego todo esto se guarda en una lista <string> que se llama ListaTokens para que esta pueda ser utilizada en el proceso continuo que es terminar el archivo, y generar la escritura un archivo con la extensión .out donde se mostrara token por token y errores, donde se indica el tipo de token, número de linea, número de columna. Finalizando con este proceso se le pedira al Usuario que brinde una ruta para guardar el archivo resultante.  
+
+# MiniC - Fase II 
+
+#Gramatica 
+
+
+PROGRAM -> DECLA
+DECLA -> DECL DECLA
+DECLA -> DECL 
+DECL -> VARIABLEDECL
+DECL -> FUNCTIONDECL
+DECL -> CONSTDECL
+DECL -> CLASSDECL
+DECL -> INTERFACEDECL
+VARIABLEDECL -> VARIABLE ;
+VARIABLE -> TYPE ident 
+CONSTDECL -> const CONSTTYPE ident ;
+CONSTTYPE -> int
+CONSTTYPE -> double
+CONSTTYPE -> bool
+CONSTTYPE -> string 
+TYPE -> int TTYPE
+TYPE -> double TTYPE
+TYPE -> bool TTYPE
+TYPE -> string TTYPE
+TYPE -> ident TTYPE
+TTYPE-> [] TTYPE
+TTYPE -> ''
+FUNCTIONDECL -> TYPE ident ( FORMALS ) STMTBLOCK
+FUNCTIONDECL -> void ident ( FORMALS ) STMTBLOCK
+FORMALS -> VARIABLE , FORMALS
+FORMALS -> VARIABLE
+CLASSDECL -> class ident PIDENT CIDENT {​​​​​​ FFIELD }​​​​​​
+PIDENT -> : ident
+PIDENT-> ''
+CIDENT -> , ident CCIDENT ,
+CCIDENT -> ident
+CCIDENT -> ''
+FFIELD -> FIELD FFIELD
+FFIELD -> ''
+FIELD -> VARIABLEDECL
+FIELD -> FUNCTIONDECL
+FIELD -> CONSTDECL
+INTERFACEDECL -> interface ident {​​​​​​ PPROTOTYPE }​​​​​​
+PPROTOTYPE -> PROTOTYPE PPROTOTYPE
+PPROTOTYPE -> ''
+PROTOTYPE -> TYPE ident ( FORMALS ) ;
+PROTOTYPE -> void ident ( FORMALS ) ;
+STMTBLOCK -> {​​​​​​ VDEC CDEC SSTMT }​​​​​​
+VDEC-> VARIABLEDECL VDEC
+VDEC-> ''
+CDEC-> CONSTDECL CDEC
+CDEC-> ''
+SSTMT-> STMT SSTMT
+SSTMT-> ''
+STMT -> IFSTMT
+STMT -> WHILESTMT
+STMT -> FORSTMT
+STMT -> BREAKSTMT
+STMT -> RETURNSTMT
+STMT -> PRINTSTMT
+STMT -> STMTBLOCK
+STMT -> EXPRI ;
+EXPRI -> EXPR
+EXPRI -> ''
+EEXPR -> EXPR EEXPR
+EEXPR -> ''
+IFSTMT -> if ( EXPR ) STMT ELSE
+ELSE -> else STMT
+ELSE -> ''
+WHILESTMT -> while ( EXPR ) STMT
+FORSTMT -> for ( EXPR ; EXPR ; EXPR ) STMT
+RETURNSTMT -> return EXPR ;
+BREAKSTMT -> break ;
+PRINTSTMT -> Console.Writeline ( EXPR EEXPR , ) ;
+EXPR -> EXPRM EXPR'
+EXPR' -> && EXPR'
+EXPRM -> EXPRN EXPRM'
+EXPRM' -> == EXPRM'
+EXPRN -> EXPRO EXPRN'
+EXPRN' -> < EXPRN'
+EXPRN' -> <= EXPRN'
+EXPRO -> EXPRP EXPRO'
+EXPRO' -> + EXPRO'
+EXPRP -> EXPRQ EXPRP'
+EXPRP' -> * EXPRP' 
+EXPRP' -> % EXPRP'
+EXPRQ -> ! EXPR
+EXPRQ ->  - EXPR
+EXPRQ -> LVALUE = EXPR
+EXPRQ -> CONSTANT
+EXPRQ -> LVALUE
+EXPRQ -> this
+EXPRQ -> ( EXPR )
+EXPRQ -> New ( ident )
+LVALUE -> ident
+LVALUE -> EXPR . ident
+CONSTANT -> intConstant
+CONSTANT -> doubleConstant
+CONSTANT -> boolConstant
+CONSTANT -> stringConstant
+CONSTANT -> null
