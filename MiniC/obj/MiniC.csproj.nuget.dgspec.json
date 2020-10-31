@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Allan Dávila\\source\\repos\\MiniC\\MiniC\\MiniC.csproj": {}
+    "C:\\Users\\Allan Dávila\\Source\\Repos\\MiniC\\MiniC\\MiniC.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Allan Dávila\\source\\repos\\MiniC\\MiniC\\MiniC.csproj": {
+    "C:\\Users\\Allan Dávila\\Source\\Repos\\MiniC\\MiniC\\MiniC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Allan Dávila\\source\\repos\\MiniC\\MiniC\\MiniC.csproj",
+        "projectUniqueName": "C:\\Users\\Allan Dávila\\Source\\Repos\\MiniC\\MiniC\\MiniC.csproj",
         "projectName": "MiniC",
-        "projectPath": "C:\\Users\\Allan Dávila\\source\\repos\\MiniC\\MiniC\\MiniC.csproj",
+        "projectPath": "C:\\Users\\Allan Dávila\\Source\\Repos\\MiniC\\MiniC\\MiniC.csproj",
         "packagesPath": "C:\\Users\\Allan Dávila\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Allan Dávila\\source\\repos\\MiniC\\MiniC\\obj\\",
+        "outputPath": "C:\\Users\\Allan Dávila\\Source\\Repos\\MiniC\\MiniC\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Allan Dávila\\AppData\\Roaming\\NuGet\\NuGet.Config",

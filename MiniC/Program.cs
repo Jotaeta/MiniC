@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+
 namespace MiniC
 {
     class Program
@@ -455,7 +457,12 @@ namespace MiniC
             {
                 while ((estadoActual != "acc"))
                 {
-                    Singleton.Instance.Estados.TryGetValue(pilaEstados.Peek() + "#" + listaEntrada[0], out estadoActual);
+                    var analisis = pilaEstados.Peek() + "#" + listaEntrada[0].ToString();
+                    analisis=Convert.ToString(analisis);
+                    byte[] asciiString = Encoding.ASCII.GetBytes(analisis);
+                    string s2 = Encoding.ASCII.GetString(asciiString);
+
+                    Singleton.Instance.Estados.TryGetValue(s2, out estadoActual);
                     var instruccion = estadoActual.Substring(0, 1);
                     var estadoTarget = string.Empty;
                     if (instruccion.Contains("s") || instruccion.Contains("r"))
@@ -480,7 +487,11 @@ namespace MiniC
                         var produccionReducir= Singleton.Instance.Gramatica[reduccion];
                         produccionReducir = produccionReducir.TrimStart();
                         produccionReducir = produccionReducir.TrimEnd();
-                        var cantidadReduccion = produccionReducir.Split(' ').Count();
+                        var cantidadReduccion = 0;
+                        if (produccionReducir!="")
+                        {
+                             cantidadReduccion=produccionReducir.Split(' ').Count();
+                        }
                         for (int i = 0; i < cantidadReduccion; i++)
                         {
                             listaSimbolos.RemoveAt(listaSimbolos.Count() - 1);
