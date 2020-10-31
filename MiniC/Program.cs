@@ -2,18 +2,31 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+
 namespace MiniC
 {
     class Program
     {
         static void Main()
         {
+
+
+            //Carga de archivo para analisis sintactico
+            Analisis_Sintactico AS = new Analisis_Sintactico();
+            AS.ListadoPalabras();
+            AS.CargarGramatica();
+
             var listaTokens = new List<string>();
             var ruta = string.Empty;
             var contadorLinea = 1;
             var contadorColumna = 0;
             var esComentario = false;
             var hayCierreComentario = false;
+
+
+
+
 
             Console.WriteLine("\tMINI C\n\t Allan Davila 1160118\n\t Jonathan Argueta 1029418\n");
             Console.ReadLine();
@@ -279,7 +292,7 @@ namespace MiniC
                                                 listaTokens.Add(letra + "        Es Simbolo No Permitido Linea: " + contadorLinea + " Columna " + inicioColumna + "-" + contadorColumna + "\n");
                                                 palabraConSNP = string.Empty;
                                             }
-                                            catch 
+                                            catch
                                             {
                                                 inicioColumna = contadorColumna;
                                                 contadorColumna += letra.ToString().Length;
@@ -410,6 +423,99 @@ namespace MiniC
                 Console.WriteLine("Su archivo ha sido procesado \nCreado en: \n" + rutaNuevoArchivo + nombreArchivo + ".out");
                 Console.ReadLine();
             }
+
+            var pilaEstados = new Stack<string>();
+            var listaSimbolos = new List<string>();
+            var listaEntrada = new List<string>();
+            var auxAccion = string.Empty;
+            using (var reader = new StreamReader(new FileStream(ruta, FileMode.Open)))
+            {
+                var lectura = reader.ReadLine();
+                lectura = lectura.TrimStart();
+                lectura = lectura.TrimEnd();
+                lectura += " ";
+                while (lectura!=null)
+                {
+                    lectura = lectura.TrimStart();
+                    lectura = lectura.TrimEnd();
+                    var dividirEspacios = lectura.Split(" ");
+                    foreach (var item in dividirEspacios)
+                    {
+                        listaEntrada.Add(item);
+                    }
+                    lectura = reader.ReadLine();
+                }
+                reader.Close();
+            }
+            listaEntrada.Add("$");
+                //Inicializar pila
+            pilaEstados.Push("0");
+            var estadoAnterior = string.Empty;
+            var estadoActual = string.Empty;
+
+            try
+            {
+                while ((estadoActual != "acc"))
+                {
+                    var analisis = pilaEstados.Peek() + "#" + listaEntrada[0].ToString();
+                    analisis=Convert.ToString(analisis);
+                    byte[] asciiString = Encoding.ASCII.GetBytes(analisis);
+                    string s2 = Encoding.ASCII.GetString(asciiString);
+
+                    Singleton.Instance.Estados.TryGetValue(s2, out estadoActual);
+                    var instruccion = estadoActual.Substring(0, 1);
+                    var estadoTarget = string.Empty;
+                    if (instruccion.Contains("s") || instruccion.Contains("r"))
+                    {
+                        estadoTarget = estadoActual.Remove(0, 1);
+                    }
+                    else
+                    {
+                        estadoTarget = instruccion;
+                    }
+
+                    if (instruccion.Contains("s"))
+                    {
+                        pilaEstados.Push(estadoTarget);
+                        listaSimbolos.Add(listaEntrada[0]);
+                        listaEntrada.RemoveAt(0);
+                        estadoAnterior = instruccion + estadoTarget;
+                    }
+                    else if (instruccion.Contains("r"))
+                    {
+                        var reduccion=Singleton.Instance.Gramatica.Keys.Where(key => key.Contains(estadoTarget + "#")).FirstOrDefault();
+                        var produccionReducir= Singleton.Instance.Gramatica[reduccion];
+                        produccionReducir = produccionReducir.TrimStart();
+                        produccionReducir = produccionReducir.TrimEnd();
+                        var cantidadReduccion = 0;
+                        if (produccionReducir!="")
+                        {
+                             cantidadReduccion=produccionReducir.Split(' ').Count();
+                        }
+                        for (int i = 0; i < cantidadReduccion; i++)
+                        {
+                            listaSimbolos.RemoveAt(listaSimbolos.Count() - 1);
+                        }
+                        listaSimbolos.Add(reduccion.Split('#')[1]);
+                        for (int i = 0; i < cantidadReduccion; i++)
+                        {
+                            pilaEstados.Pop();
+                        }
+                        estadoAnterior= instruccion + estadoTarget;
+                        Singleton.Instance.Estados.TryGetValue(pilaEstados.Peek() + "#" + listaSimbolos[listaSimbolos.Count()-1], out estadoActual);
+                        pilaEstados.Push(estadoActual);
+                                           
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Entrada no aceptada.");
+                throw;
+            }
+            Console.Write("La entrada ha sido aceptada correctamente");
+            Console.ReadLine();
         }
     }
 }

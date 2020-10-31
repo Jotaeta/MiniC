@@ -24,8 +24,7 @@ namespace MiniC
         public static Regex regexOperadores = new Regex(@"^(\+|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\&\&|\|\||\!|\;|\,|\.|\[|\]|\(|\)|\{|\}|\[\]|\(\)|\{\})$");
         public static Regex regexSimbolosPermitidos = new Regex(@"(\+|\s|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\&\&|\|\||\!|\;|\,|\.|\[|\]|\(|\)|\{|\}|\[\]|\(\)|\{\}|\w)");
         public static Regex regexIden = new Regex(@"^(\w)(;)$");
-        public static Regex regexFinComentario = new Regex(@"^*/$
-");
+        public static Regex regexFinComentario = new Regex(@"^*/$");
       
         public static string AnalisisPalabras(string palabra, int contadorLinea, int inicioColumna, int contadorColumna)
         {

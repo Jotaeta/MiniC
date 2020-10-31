@@ -1,0 +1,13 @@
+C:\Users\Allan Dávila\Source\Repos\MiniC\MiniC\bin\Debug\netcoreapp3.1\MiniC.exe
+C:\Users\Allan Dávila\Source\Repos\MiniC\MiniC\bin\Debug\netcoreapp3.1\MiniC.deps.json
+C:\Users\Allan Dávila\Source\Repos\MiniC\MiniC\bin\Debug\netcoreapp3.1\MiniC.runtimeconfig.json
+C:\Users\Allan Dávila\Source\Repos\MiniC\MiniC\bin\Debug\netcoreapp3.1\MiniC.runtimeconfig.dev.json
+C:\Users\Allan Dávila\Source\Repos\MiniC\MiniC\bin\Debug\netcoreapp3.1\MiniC.dll
+C:\Users\Allan Dávila\Source\Repos\MiniC\MiniC\bin\Debug\netcoreapp3.1\MiniC.pdb
+C:\Users\Allan Dávila\Source\Repos\MiniC\MiniC\obj\Debug\netcoreapp3.1\MiniC.csprojAssemblyReference.cache
+C:\Users\Allan Dávila\Source\Repos\MiniC\MiniC\obj\Debug\netcoreapp3.1\MiniC.AssemblyInfoInputs.cache
+C:\Users\Allan Dávila\Source\Repos\MiniC\MiniC\obj\Debug\netcoreapp3.1\MiniC.AssemblyInfo.cs
+C:\Users\Allan Dávila\Source\Repos\MiniC\MiniC\obj\Debug\netcoreapp3.1\MiniC.csproj.CoreCompileInputs.cache
+C:\Users\Allan Dávila\Source\Repos\MiniC\MiniC\obj\Debug\netcoreapp3.1\MiniC.dll
+C:\Users\Allan Dávila\Source\Repos\MiniC\MiniC\obj\Debug\netcoreapp3.1\MiniC.pdb
+C:\Users\Allan Dávila\Source\Repos\MiniC\MiniC\obj\Debug\netcoreapp3.1\MiniC.genruntimeconfig.cache
