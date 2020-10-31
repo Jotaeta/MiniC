@@ -236,3 +236,10 @@ CONSTANT -> boolConstant
 CONSTANT -> stringConstant
 
 CONSTANT -> null
+
+
+
+
+• Manejo de Errores
+
+El manejo de Errores lo manejamos por medio de nuestra tabla de estados de tal modo que si una cadena ingresada no llega al estado de aceptacion es porque tiene un error en una transicion y no cumple con la estructura indicada mostrando un mensaje en pantalla donde dice Error cadena ingresada no es valida para ser aceptada.
