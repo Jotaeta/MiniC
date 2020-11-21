@@ -1,0 +1,11 @@
+C:\Users\Allan Dávila\Desktop\MiniC\MiniC\bin\Debug\netcoreapp2.2\MiniC.deps.json
+C:\Users\Allan Dávila\Desktop\MiniC\MiniC\bin\Debug\netcoreapp2.2\MiniC.runtimeconfig.json
+C:\Users\Allan Dávila\Desktop\MiniC\MiniC\bin\Debug\netcoreapp2.2\MiniC.runtimeconfig.dev.json
+C:\Users\Allan Dávila\Desktop\MiniC\MiniC\bin\Debug\netcoreapp2.2\MiniC.dll
+C:\Users\Allan Dávila\Desktop\MiniC\MiniC\bin\Debug\netcoreapp2.2\MiniC.pdb
+C:\Users\Allan Dávila\Desktop\MiniC\MiniC\obj\Debug\netcoreapp2.2\MiniC.csprojAssemblyReference.cache
+C:\Users\Allan Dávila\Desktop\MiniC\MiniC\obj\Debug\netcoreapp2.2\MiniC.csproj.CoreCompileInputs.cache
+C:\Users\Allan Dávila\Desktop\MiniC\MiniC\obj\Debug\netcoreapp2.2\MiniC.AssemblyInfoInputs.cache
+C:\Users\Allan Dávila\Desktop\MiniC\MiniC\obj\Debug\netcoreapp2.2\MiniC.AssemblyInfo.cs
+C:\Users\Allan Dávila\Desktop\MiniC\MiniC\obj\Debug\netcoreapp2.2\MiniC.dll
+C:\Users\Allan Dávila\Desktop\MiniC\MiniC\obj\Debug\netcoreapp2.2\MiniC.pdb
