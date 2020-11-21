@@ -243,3 +243,24 @@ CONSTANT -> null
 • Manejo de Errores
 
 El manejo de Errores lo manejamos por medio de nuestra tabla de estados de tal modo que si una cadena ingresada no llega al estado de aceptacion es porque tiene un error en una transicion y no cumple con la estructura indicada mostrando un mensaje en pantalla donde dice Error cadena ingresada no es valida para ser aceptada.
+
+
+------------------------------------------------FASE 3 ------------------------------------------------------
+ESTRUCTURA TABLA DE SIMBOLOS
+
+NOMBRE - PARAMETROS (SI SON FUNCIONES) - TIPO - TIPOSIMBOLO - VALOR - ACTIVO - BLOQUE
+
+La tabla de símbolos fue implementada a través de una lista enlazada para que esta fuera implementada de manera mas 
+sencilla, inicialmente se buscan las declaraciones de variables así como de funciones y estas se van almacenando en
+ella. Posteriormente, se realiza una búsqueda de asignaciones a las variables, estas incluyen asignarle un valor 
+(numerico o string o bool) o bien asignarles el valor de una operación ( A = B + C ). Tambíen se lleva el control del
+bloque que está siendo utilizado, cuando se cambian de bloques, las variables pasan a ser desactivadas y así se ve 
+reflejado en la TS en el archivo de texto, ya que se cierran todos los bloques, todos los símbolos son desactivados.
+
+Manejo de errores:
+-El manejo de errores en esta etapa se realiza por medio de mensajes en la consola, donde nos indican la variable a la 
+cual quiere asignarse un valor, indica el error que se presenta (por ejemplo, asignacion de tipos incorrectos), para detectar
+el error necesario a desplegar, se consulta la TS para verificar si este existe o si los tipos son iguales y despliegua
+la línea donde se presenta el inconveninente. Ejemplo:
+a <- No se se ha recibido el tipo int, LINEA: 5
+
