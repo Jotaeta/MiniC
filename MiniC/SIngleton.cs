@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using MiniC;
 namespace MiniC
 {
     public class Singleton
@@ -19,6 +19,8 @@ namespace MiniC
         }
         public Dictionary <string , string> Estados = new Dictionary <string, string> ();
         public Dictionary<string, string> Gramatica = new Dictionary<string, string>();
+        public List <Simbolo>TablaSimbolos = new List<Simbolo>();
+        public List<Simbolo> TodosSimbolos = new List<Simbolo>();
 
     }
 }

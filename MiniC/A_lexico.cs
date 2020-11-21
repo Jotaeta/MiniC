@@ -21,8 +21,8 @@ namespace MiniC
         public static Regex regexDoubleExponencial = new Regex(@"^[0-9]+\.([0-9])*(E|e)(\+|\-)?[0-9]+$");
         //Falta completar
         public static char asciiComillas = '"';
-        public static Regex regexOperadores = new Regex(@"^(\+|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\&\&|\|\||\!|\;|\,|\.|\[|\]|\(|\)|\{|\}|\[\]|\(\)|\{\})$");
-        public static Regex regexSimbolosPermitidos = new Regex(@"(\+|\s|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\&\&|\|\||\!|\;|\,|\.|\[|\]|\(|\)|\{|\}|\[\]|\(\)|\{\}|\w)");
+        public static Regex regexOperadores = new Regex(@"^(\+|\-|\*|\/|\:|\%|\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\&\&|\|\||\!|\;|\,|\.|\[|\]|\(|\)|\{|\}|\[\]|\(\)|\{\})$");
+        public static Regex regexSimbolosPermitidos = new Regex(@"(\+|\s|\:|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\&\&|\|\||\!|\;|\,|\.|\[|\]|\(|\)|\{|\}|\[\]|\(\)|\{\}|\w)");
         public static Regex regexIden = new Regex(@"^(\w)(;)$");
         public static Regex regexFinComentario = new Regex(@"^*/$");
       
